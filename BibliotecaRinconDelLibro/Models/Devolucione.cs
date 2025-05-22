@@ -23,7 +23,7 @@ public partial class Devolucione
     [Column("id_EstadoRegreso")]
     public int? IdEstadoRegreso { get; set; }
 
-    public DateOnly? FechaDevuelto { get; set; }
+  
 
     [ForeignKey("IdEstadoRegreso")]
     [InverseProperty("Devoluciones")]
@@ -33,7 +33,7 @@ public partial class Devolucione
     [InverseProperty("Devoluciones")]
     public virtual Prestamo? IdPrestamoNavigation { get; set; }
     
-    [Column("fecha_devolucion")]
+    [Column("FechaDevolucion")]
     [DataType(DataType.Date)]
     public DateTime FechaDevolucion { get; set; }
 }
