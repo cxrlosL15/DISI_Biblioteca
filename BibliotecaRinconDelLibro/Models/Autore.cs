@@ -8,28 +8,32 @@ namespace BibliotecaRinconDelLibro.Models;
 
 public partial class Autore
 {
+    [Required(ErrorMessage = "El autor es obligatorio")]
     [Key]
     [Column("Id_Autores")]
     public int IdAutores { get; set; }
 
+    [Display(Name = "Nombre")]
     [StringLength(255)]
     [Unicode(false)]
     public string? Nombres { get; set; }
 
+    [Display(Name = "Apellido Paterno")]
     [Column("Apellido_P")]
     [StringLength(255)]
     [Unicode(false)]
     public string? ApellidoP { get; set; }
 
+    [Display(Name = "Apellido Materno")]
     [Column("Apellido_M")]
     [StringLength(255)]
     [Unicode(false)]
     public string? ApellidoM { get; set; }
 
-    [InverseProperty("IdAutores1")]
-    public virtual ICollection<Libro> Libros { get; set; } = new List<Libro>();
+    // Nuevo campo de borrado lógico
+    [Required]
+    [Column("BorradoLogico")]
+    public bool BorradoLogico { get; set; } = false;
 
-    [ForeignKey("IdAutores")]
-    [InverseProperty("IdAutoresNavigation")]
-    public virtual ICollection<Libro> IdLibros { get; set; } = new List<Libro>();
+    public virtual ICollection<LibroAutor> LibroAutores { get; set; } = new List<LibroAutor>();
 }

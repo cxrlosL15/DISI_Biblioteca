@@ -59,7 +59,11 @@ public partial class BibliotecaContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    public virtual DbSet<LibroAutor> LibroAutores { get; set; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=localhost;Database=BibliotecaRinconDelLibro;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -68,24 +72,10 @@ public partial class BibliotecaContext : DbContext
         {
             entity.HasKey(e => e.IdAutores).HasName("PK__Autores__205B59277FD0D3FB");
 
-            entity.HasMany(d => d.IdLibros).WithMany(p => p.IdAutoresNavigation)
-                .UsingEntity<Dictionary<string, object>>(
-                    "AutoresLibro",
-                    r => r.HasOne<Libro>().WithMany()
-                        .HasForeignKey("IdLibro")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Autores_L__id_Li__59063A47"),
-                    l => l.HasOne<Autore>().WithMany()
-                        .HasForeignKey("IdAutores")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Autores_L__Id_Au__5812160E"),
-                    j =>
-                    {
-                        j.HasKey("IdAutores", "IdLibro").HasName("PK__Autores___C7DA6F47A291F677");
-                        j.ToTable("Autores_Libros");
-                        j.IndexerProperty<int>("IdAutores").HasColumnName("Id_Autores");
-                        j.IndexerProperty<int>("IdLibro").HasColumnName("id_Libro");
-                    });
+            entity.Property(e => e.BorradoLogico)
+            .HasColumnName("BorradoLogico")
+            .HasDefaultValue(false)
+            .IsRequired();
         });
 
         modelBuilder.Entity<Categoria>(entity =>
@@ -124,6 +114,11 @@ public partial class BibliotecaContext : DbContext
         modelBuilder.Entity<Editorial>(entity =>
         {
             entity.HasKey(e => e.IdEditorial).HasName("PK__Editoria__BCB52C78D55B6B81");
+
+            entity.Property(e => e.BorradoLogico)
+            .HasColumnName("BorradoLogico")
+            .HasDefaultValue(false)
+            .IsRequired();
         });
 
         modelBuilder.Entity<EncabezadoTicket>(entity =>
@@ -164,7 +159,7 @@ public partial class BibliotecaContext : DbContext
         {
             entity.HasKey(e => e.IdLibro).HasName("PK__Libros__7813660F7E4FB851");
 
-            entity.HasOne(d => d.IdAutores1).WithMany(p => p.Libros).HasConstraintName("FK__Libros__id_Autor__5070F446");
+            //entity.HasOne(d => d.IdAutores1).WithMany(p => p.Libros).HasConstraintName("FK__Libros__id_Autor__5070F446");
 
             entity.HasOne(d => d.IdCategoriasNavigation).WithMany(p => p.Libros).HasConstraintName("FK__Libros__id_Categ__534D60F1");
 
@@ -172,9 +167,20 @@ public partial class BibliotecaContext : DbContext
 
             entity.HasOne(d => d.IdGenerosNavigation).WithMany(p => p.Libros).HasConstraintName("FK__Libros__id_Gener__5165187F");
 
-            entity.HasOne(d => d.IdImgLibrosNavigation).WithMany(p => p.Libros).HasConstraintName("FK__Libros__id_imgLi__5441852A");
+            entity.HasOne(l => l.IdImgLibrosNavigation)
+                 .WithMany(i => i.Libros)
+                 .HasForeignKey(l => l.IdImgLibros)
+                 .OnDelete(DeleteBehavior.Restrict)
+                 .HasConstraintName("FK__Libros__id_imgLi__5441852A");
 
             entity.HasOne(d => d.IdUbicacionNavigation).WithMany(p => p.Libros).HasConstraintName("FK__Libros__id_Ubica__5535A963");
+
+            entity.HasOne(d => d.IdDisponibilidadNavigation).WithMany(p => p.Libros).HasForeignKey(d => d.IdDisponibilidad).HasConstraintName("FK_Libros_Disponibilidad");
+
+            entity.Property(e => e.BorradoLogico)
+            .HasColumnName("BorradoLogico")
+            .HasDefaultValue(false)
+            .IsRequired();
         });
 
         modelBuilder.Entity<Multa>(entity =>
@@ -236,6 +242,11 @@ public partial class BibliotecaContext : DbContext
         modelBuilder.Entity<Ubicacione>(entity =>
         {
             entity.HasKey(e => e.IdUbicacion).HasName("PK__Ubicacio__81BAA5915BB0B892");
+
+            entity.Property(e => e.BorradoLogico)
+           .HasColumnName("BorradoLogico")
+           .HasDefaultValue(false)
+           .IsRequired();
         });
 
         modelBuilder.Entity<Usuario>(entity =>
@@ -243,6 +254,28 @@ public partial class BibliotecaContext : DbContext
             entity.HasKey(e => e.IdUsuario).HasName("PK__Usuarios__4E3E04ADFCB2806E");
 
             entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.Usuarios).HasConstraintName("FK__Usuarios__id_rol__4AB81AF0");
+        });
+
+        modelBuilder.Entity<LibroAutor>(entity =>
+        {
+            entity.HasKey(e => new { e.IdLibro, e.IdAutor }); // Clave compuesta
+
+            entity.ToTable("Autores_Libros");
+
+            entity.Property(e => e.IdLibro).HasColumnName("id_Libro");
+            entity.Property(e => e.IdAutor).HasColumnName("Id_Autores");
+
+            entity.HasOne(d => d.Libro)
+                .WithMany(p => p.LibroAutores)
+                .HasForeignKey(d => d.IdLibro)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Autores_L__id_Li__59063A47");
+
+            entity.HasOne(d => d.Autor)
+                .WithMany(p => p.LibroAutores)
+                .HasForeignKey(d => d.IdAutor)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Autores_L__Id_Au__5812160E");
         });
 
         OnModelCreatingPartial(modelBuilder);

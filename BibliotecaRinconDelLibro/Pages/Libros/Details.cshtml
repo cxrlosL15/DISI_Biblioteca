@@ -1,0 +1,119 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Libros.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Libro</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Titulo
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.Titulo)
+        </dd>
+        <dt class="col-sm-2">
+            Fecha de impresión
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.FechaDeImpresion)
+        </dd>
+        <dt class="col-sm-2">
+            Valor de reposición
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.ValorReposicion)
+        </dd>
+        <dt class="col-sm-2">
+            Categoría
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.IdCategoriasNavigation.Categoria1)
+        </dd>
+        <dt class="col-sm-2">
+            Género
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.IdGenerosNavigation.Generos)
+        </dd>
+        <dt class="col-sm-2">
+            Autor
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Libro.LibroAutores != null && Model.Libro.LibroAutores.Any())
+            {
+                string autores = string.Join(", ",
+                Model.Libro.LibroAutores.Select(a => $"{a.Autor?.Nombres} {a.Autor?.ApellidoP} {a.Autor?.ApellidoM}"));
+                @autores
+            }
+            else
+            {
+                <span>No hay autores asociados</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            Editorial
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.IdEditorialNavigation.Nombre)
+        </dd>
+        <dt class="col-sm-2">
+            Ubicación - Pasillo
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.IdUbicacionNavigation.Pasillo)
+        </dd>
+        <dt class="col-sm-2">
+            Ubicación - Estante
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.IdUbicacionNavigation.Estante)
+        </dd>
+        <dt class="col-sm-2">
+            Total de libros
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Libro.IdDisponibilidadNavigation.TotalLibros)
+        </dd>
+        <dt class="col-sm-2">
+            Copias prestadas
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Libro.IdDisponibilidadNavigation?.CopiasPrestadas != null
+                ? Model.Libro.IdDisponibilidadNavigation.CopiasPrestadas.ToString()
+                : "No hay datos")
+        </dd>
+        <dt class="col-sm-2">
+            Total después de préstamos
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Libro.IdDisponibilidadNavigation?.TotalDespuesPrestamos != null
+                ? Model.Libro.IdDisponibilidadNavigation.TotalDespuesPrestamos.ToString()
+                : "No hay datos")
+        </dd>
+        <dt class="col-sm-2">
+            Imagen del libro
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.Libro.IdImgLibrosNavigation?.ImgLibros))
+            {
+                <img src="@Url.Content(Model.Libro.IdImgLibrosNavigation.ImgLibros)" alt="Imagen del libro" style="max-height: 200px;" />
+            }
+            else
+            {
+                <span>Sin imagen</span>
+            }
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Libro.IdLibro">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -12,6 +12,7 @@ public partial class Categoria
     [Column("id_Categorias")]
     public int IdCategorias { get; set; }
 
+    [Display(Name = "Categoría")]
     [Column("Categoria")]
     [StringLength(255)]
     [Unicode(false)]

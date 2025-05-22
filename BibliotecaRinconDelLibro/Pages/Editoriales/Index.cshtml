@@ -1,0 +1,277 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Editoriales.IndexModel
+@{
+    ViewData["Title"] = "Editoriales";
+}
+
+<h1>Editoriales</h1>
+
+<form id="searchForm" method="get" class="d-flex align-items-center mb-3">
+    <input type="text"
+           name="SearchString"
+           id="searchInput"
+           value="@Model.SearchString"
+           class="form-control me-2"
+           placeholder="Buscar editorial..." />
+
+    <button type="submit" class="btn btn-primary me-2">
+        Buscar
+    </button>
+
+    <a asp-page="./Index" class="btn btn-secondary">
+        Limpiar
+    </a>
+</form>
+
+<div class="d-flex justify-content-start mb-4">
+    <button type="button"
+            class="btn btn-success ml-auto"
+            data-bs-toggle="modal"
+            data-bs-target="#createModal">
+        + Nueva
+    </button>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th class="text-right">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Editoriales)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td class="text-right">
+                    <!-- Editar: abrimos modal y cargamos datos -->
+                    <button class="btn btn-sm btn-primary"
+                            data-id="@item.IdEditorial"
+                            data-nombre="@item.Nombre"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal">
+                        Editar
+                    </button>
+
+                    <!-- Borrar: interceptado por SweetAlert2 -->
+                    <form method="post"
+                          asp-page-handler="Delete"
+                          asp-route-id="@item.IdEditorial"
+                          class="d-inline delete-form">
+                        <button type="button"
+                                class="btn btn-sm btn-danger delete-btn"
+                                data-name="@item.Nombre">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal Crear -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 1) Encabezado -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Nueva Editorial</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <!-- 2) Formulario dentro de modal-body -->
+            <form id="createForm" method="post" asp-page-handler="Create" novalidate>
+                <!-- Validación de modelo: aquí -->
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="CreateEditorial.Nombre"></label>
+                        <input asp-for="CreateEditorial.Nombre" class="form-control" />
+                        <span asp-validation-for="CreateEditorial.Nombre" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- 3) Botones en modal-footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- 1) Encabezado -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Editorial</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <!-- 2) Formulario dentro de modal-body -->
+            <form id="editForm" method="post" asp-page-handler="Edit" novalidate>
+                <!-- Validación de modelo: aquí -->
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body">
+                    <!-- Hidden para el Id -->
+                    <input type="hidden" asp-for="EditEditorial.IdEditorial" />
+
+                    <div class="form-group">
+                        <label asp-for="EditEditorial.Nombre"></label>
+                        <input asp-for="EditEditorial.Nombre" class="form-control" />
+                        <span asp-validation-for="EditEditorial.Nombre" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- 3) Botones en modal-footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .fila-resaltada {
+        background-color: #d1e7dd !important; /* verde suave tipo Bootstrap alert-success */
+        transition: background-color 1s ease;
+    }
+</style>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(function () {
+            // abrir los modales con datos (igual que antes)
+            $('#editModal').on('show.bs.modal', function (e) {
+                const btn = e.relatedTarget;
+                const id = btn.dataset.id;
+                const nombre = btn.dataset.nombre;
+                $('#editForm input[name="EditEditorial.IdEditorial"]').val(id);
+                $('#editForm input[name="EditEditorial.Nombre"]').val(nombre);
+            });
+
+            // ---- Crear vía AJAX ----
+            $('#createForm').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                // en createForm y editForm...
+                form.find('.text-danger').text('');
+                form.find('[data-valmsg-summary] ul').empty();
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    success: function (resp) {
+                        if (resp.success) {
+                            location.reload(); // ✅ Recargar página al crear
+                        }
+                        else {
+                            // mostrar errores
+                            resp.errors.forEach(function (err) {
+                                // summary
+                                let sum = form.find('[data-valmsg-summary]');
+                                if (!sum.find('ul').length) sum.append('<ul></ul>');
+                                // campo específico
+                                var name = err.field.replace('CreateEditorial.', '');
+                                form.find(`[name="CreateEditorial.${name}"]`)
+                                    .next('.text-danger')
+                                    .text(err.messages[0]);
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'No se pudo procesar la solicitud', 'error');
+                    }
+                });
+            });
+
+            // ---- Editar vía AJAX ----
+            $('#editForm').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                // en createForm y editForm...
+                form.find('.text-danger').text('');
+                form.find('[data-valmsg-summary] ul').empty();
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    success: function (resp) {
+                        if (resp.success) {
+                            location.reload(); // ✅ Recargar página al editar
+                        }
+                        else {
+                            resp.errors.forEach(function (err) {
+                                let sum = form.find('[data-valmsg-summary]');
+                                if (!sum.find('ul').length) sum.append('<ul></ul>');
+
+                                var name = err.field.replace('EditEditorial.', '');
+                                form.find(`[name="EditEditorial.${name}"]`)
+                                    .next('.text-danger')
+                                    .text(err.messages[0]);
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'No se pudo procesar la solicitud', 'error');
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // A) Auto-submit al vaciar búsqueda
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value === '') {
+                    document.getElementById('searchForm').submit();
+                }
+            });
+
+            // ✅ Delegación de eventos para botones de eliminación
+            $(document).on('click', '.delete-btn', function () {
+                const name = $(this).data('name');
+                const form = $(this).closest('form');
+                Swal.fire({
+                    title: '¿Eliminar?',
+                    text: `¿Seguro que quieres eliminar "${name}"?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then(result => {
+                    if (result.isConfirmed) form.submit();
+                });
+            });
+        });
+    </script>
+
+    @if (Model.ShowCreateModal)
+    {
+        <script>$('#createModal').modal('show');</script>
+    }
+    @if (Model.ShowEditModal)
+    {
+        <script>$('#editModal').modal('show');</script>
+    }
+
+}
+   
+

@@ -13,9 +13,16 @@ public partial class Editorial
     [Column("ID_Editorial")]
     public int IdEditorial { get; set; }
 
+    [Display(Name = "Editorial")]
     [StringLength(255)]
     [Unicode(false)]
     public string? Nombre { get; set; }
+
+    // Nuevo campo de borrado lógico
+    [Required]
+    [Column("BorradoLogico")]
+    public bool BorradoLogico { get; set; } = false;
+
 
     [InverseProperty("IdEditorialNavigation")]
     public virtual ICollection<Libro> Libros { get; set; } = new List<Libro>();

@@ -12,6 +12,7 @@ public partial class Genero
     [Column("id_Generos")]
     public int IdGeneros { get; set; }
 
+    [Display(Name = "Género")]
     [StringLength(255)]
     [Unicode(false)]
     public string? Generos { get; set; }

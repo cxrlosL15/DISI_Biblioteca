@@ -1,0 +1,560 @@
+﻿@page 
+@model BibliotecaRinconDelLibro.Pages.Libros.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Libro</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NuevaDisponibilidad.IdDisponibilidad" />
+            <input type="hidden" asp-for="Libro.IdDisponibilidad" />
+            <input type="hidden" asp-for="Libro.IdLibro" />
+            <div class="form-group">
+                <label asp-for="Libro.Titulo" class="control-label">Título</label>
+                <input asp-for="Libro.Titulo" class="form-control" />
+                <span asp-validation-for="Libro.Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.ValorReposicion" class="control-label">Valor de Reposición</label>
+                <input asp-for="Libro.ValorReposicion" id="valorReposicionInput" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Libro.ValorReposicion" class="text-danger"></span>
+            </div>
+            
+            <!-- Mostrar TotalLibros actual -->
+            <div class="form-group">
+                <label asp-for="NuevaDisponibilidad.TotalLibros" class="control-label">Total de Libros</label>
+                <input asp-for="NuevaDisponibilidad.TotalLibros" class="form-control readonly-field" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="NuevaDisponibilidad.CopiasPrestadas" class="control-label">Libros en préstamo</label>
+                <input asp-for="NuevaDisponibilidad.CopiasPrestadas" class="form-control readonly-field" readonly />
+            </div>
+
+            <!-- -------------------------------------- -->
+            <!-- Operación de disponibilidad -->
+            <div class="form-group mt-4">
+                <label><strong>¿Qué desea hacer?</strong></label>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="SelectedOperation"
+                           id="opAgregar"
+                           value="Agregar"
+                           data-waschecked="false" />
+                    <label class="form-check-label" for="opAgregar">Agregar libros</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="SelectedOperation"
+                           id="opRetirar"
+                           value="Retirar" 
+                           data-waschecked="false" />
+                    <label class="form-check-label" for="opRetirar">Retirar libros</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Cantidad</label>
+                <div class="input-group spinner">
+                    <button type="button" class="btn btn-outline-secondary" id="btn-decrement" disabled>–</button>
+                    <input id="qtyInput"
+                           asp-for="Quantity"
+                           type="number"
+                           min="0"
+                           class="form-control text-center"
+                           style="max-width: 80px;"
+                           disabled />
+                    <button type="button" class="btn btn-outline-secondary" id="btn-increment" disabled>+</button>
+                </div>
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <!-- -------------------------------------- -->
+
+
+            <div class="form-group">
+                <label asp-for="Libro.FechaDeImpresion" class="control-label">Fecha de Impresión</label>
+                <input asp-for="Libro.FechaDeImpresion" class="form-control" type="date" />
+                <span asp-validation-for="Libro.FechaDeImpresion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdEditorial" class="control-label">Editorial</label>
+                <select asp-for="Libro.IdEditorial" class="form-control" asp-items="@(ViewData["IdEditorial"] as SelectList)">
+                    <option value="">Seleccione una editorial</option>
+                </select>
+                <span asp-validation-for="Libro.IdEditorial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdCategorias" class="control-label">Categoría</label>
+                <select asp-for="Libro.IdCategorias" class="form-control" asp-items="@(ViewData["IdCategorias"] as SelectList)">
+                    <option value="">Seleccione una categoría</option>
+                </select>
+                <span asp-validation-for="Libro.IdCategorias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdGeneros" class="control-label">Género</label>
+                <select asp-for="Libro.IdGeneros" class="form-control" asp-items="@(ViewData["IdGeneros"] as SelectList)">
+                    <option value="">Seleccione un género</option>
+                </select>
+                <span asp-validation-for="Libro.IdGeneros" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdUbicacion" class="control-label">Ubicación</label>
+                <select asp-for="Libro.IdUbicacion" class="form-control" asp-items="@(ViewData["IdUbicacion"] as SelectList)">
+                    <option value="">Seleccione una ubicación</option>
+                </select>
+                <span asp-validation-for="Libro.IdUbicacion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Autores</label>
+                <div id="contenedor-autores">
+                    @* Si hay autores ya seleccionados, los renderizamos *@
+                    @if (Model.AutoresSeleccionados != null && Model.AutoresSeleccionados.Any())
+                    {
+                        for (int i = 0; i < Model.AutoresSeleccionados.Count; i++)
+                        {
+                            <div class="input-group mb-2 autor-select">
+                                <select class="form-control" name="AutoresSeleccionados[]" required>
+                                    <option value="">Seleccione un autor...</option>
+                                    @foreach (var autor in (IEnumerable<SelectListItem>)ViewData["IdAutores"])
+                                    {
+                                        <option value="@autor.Value"
+                                                selected="@(autor.Value == Model.AutoresSeleccionados[i].ToString() ? "selected" : null)">
+                                            @autor.Text
+                                        </option>
+                                    }
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-danger btn-sm eliminar-autor">X</button>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        @* Si no hay ninguno, renderizamos un select vacío *@
+                        <div class="input-group mb-2 autor-select">
+                            <select class="form-control" name="AutoresSeleccionados[]" required>
+                                <option value="">Seleccione un autor...</option>
+                                @foreach (var autor in (IEnumerable<SelectListItem>)ViewData["IdAutores"])
+                                {
+                                    <option value="@autor.Value">@autor.Text</option>
+                                }
+                            </select>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-danger btn-sm eliminar-autor">X</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-primary btn-sm mt-1" id="agregar-autor">
+                    Agregar otro autor
+                </button>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="Imagen" class="control-label">Actualizar Imagen</label>
+                <input asp-for="Imagen" class="form-control" type="file" accept="image/*" onchange="mostrarVistaPrevia(this)" />
+                <span asp-validation-for="Imagen" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-2">
+                <label>Imagen actual:</label><br />
+                @if (!string.IsNullOrEmpty(Model.Libro.IdImgLibrosNavigation?.ImgLibros))
+                {
+                    <img id="imagenActual" src="@Url.Content(Model.Libro.IdImgLibrosNavigation.ImgLibros)" alt="Imagen actual" style="max-height: 200px;" />
+                }
+                else
+                {
+                    <span>Sin imagen</span>
+                }
+            </div>
+
+            <div class="form-group mt-2">
+                <img id="vistaPrevia" src="#" alt="Vista previa" style="max-width: 200px; display: none;" />
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+<style>
+    /* Oculta las flechas en inputs tipo number (para Chrome, Safari, Edge) */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Para Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .input-group.spinner .btn {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        font-size: 1.25rem;
+    }
+</style>
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        @*IMAGENES*@
+            function mostrarErrorSweet(texto) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de validación',
+                    text: texto,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#765E49',
+                    background: '#FAFAF8'
+                });
+            }
+        function mostrarVistaPrevia(input) {
+            try {
+                const archivo = input.files && input.files[0];
+                const vistaPrevia = document.getElementById('vistaPrevia');
+                const imagenActual = document.getElementById('imagenActual');
+
+                if (!archivo) {
+                    vistaPrevia.src = "#";
+                    vistaPrevia.style.display = 'none';
+                    return;
+                }
+
+                if (!archivo.type.startsWith('image/')) {
+                    mostrarErrorSweet("El archivo seleccionado no es una imagen válida.");
+                    input.value = "";
+                    vistaPrevia.style.display = 'none';
+                    return;
+                }
+
+                // Limpiar validación si el archivo es válido
+                const mensajeValidacion = document.querySelector('span[data-valmsg-for="Imagen"]');
+                if (mensajeValidacion) {
+                    mensajeValidacion.innerText = "";
+                    input.setCustomValidity(""); // Limpia error personalizado en HTML5 si lo hay
+                }
+
+                const lector = new FileReader();
+                lector.onload = function (e) {
+                    vistaPrevia.src = e.target.result;
+                    vistaPrevia.style.display = 'block';
+                    if (imagenActual) {
+                        imagenActual.style.display = 'none';
+                    }
+                };
+                lector.onerror = function () {
+                    mostrarErrorSweet("Error al cargar la vista previa.");
+                };
+                lector.readAsDataURL(archivo);
+            } catch (e) {
+                console.error("Error en vista previa:", e);
+            }
+        }
+    </script>
+
+    <script>
+        @*IMAGENES*@
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const inputImagen = document.querySelector('input[type="file"][name="Imagen"]');
+            const mensajeValidacion = document.querySelector('span[data-valmsg-for="Imagen"]');
+
+            if (inputImagen && inputImagen.files.length > 0 && !inputImagen.files[0].type.startsWith("image/")) {
+                e.preventDefault(); // evita el envío si no es imagen
+                if (mensajeValidacion) {
+                    mensajeValidacion.innerText = "El archivo seleccionado no es una imagen válida.";
+                }
+                inputImagen.focus();
+            }
+        });
+    </script>
+
+    <script>
+        // Deshabilitar el scroll del ratón sobre el input
+        document.getElementById('qtyInput')
+            .addEventListener('wheel', e => e.preventDefault());
+
+        // Incrementar
+        document.getElementById('btn-increment')
+            .addEventListener('click', () => {
+                let inp = document.getElementById('qtyInput');
+                let v = parseInt(inp.value) || 0;
+                inp.value = v + 1;
+            });
+
+        // Decrementar (no por debajo de 0)
+        document.getElementById('btn-decrement')
+            .addEventListener('click', () => {
+                let inp = document.getElementById('qtyInput');
+                let v = parseInt(inp.value) || 0;
+                if (v > 0) inp.value = v - 1;
+            });
+    </script>
+
+    <script>
+        // Capturamos el submit del formulario
+        document.querySelector("form").addEventListener("submit", function (e) {
+            // Obtenemos la operación seleccionada: "Agregar" o "Retirar"
+            const operacion = document.querySelector('input[name="SelectedOperation"]:checked')?.value;
+            // Sólo nos interesa validar si es "Retirar"
+            if (operacion === "Retirar") {
+                // Leemos los valores del DOM
+                const total = parseInt(document.getElementById('NuevaDisponibilidad_TotalLibros').value) || 0;
+                const prestados = parseInt(document.getElementById('NuevaDisponibilidad_CopiasPrestadas').value) || 0;
+                const qty = parseInt(document.getElementById('qtyInput').value) || 0;
+
+                // Calculamos el máximo que se puede retirar
+                // Escenario A: prestados = 0 → max = total
+                // Escenario B: prestados > 0 → max = total - prestados
+                const maxRetirar = prestados === 0
+                    ? total
+                    : (total - prestados);
+
+                // Si el usuario pide más de lo permitido, cancelamos el envío y mostramos SweetAlert2
+                if (qty > maxRetirar) {
+                    e.preventDefault();
+                    mostrarErrorSweet(
+                        `No puedes retirar ${qty} libros. ` +
+                        `Solo hay ${prestados} en préstamo y ` +
+                        `${total - prestados} disponibles (máximo ${maxRetirar}).`
+                    );
+                }
+            }
+        });
+    </script>
+
+    <script>
+        const qty = document.getElementById('qtyInput');
+
+        // 1) Prevenir que se escriban teclas que no sean dígitos o teclas de control
+        qty.addEventListener('keydown', e => {
+            const allowed = [
+                'Backspace', 'Tab', 'ArrowLeft', 'ArrowRight',
+                'Delete', 'Home', 'End'
+            ];
+            // si es control o flechas, OK
+            if (allowed.includes(e.key)) return;
+
+            // si no es dígito (0–9), bloquea
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // 2) Filtrar en cada input (por si viene de autocompletar o arrastrar)
+        qty.addEventListener('input', e => {
+            const sóloDígitos = e.target.value.replace(/\D/g, '');
+            if (sóloDígitos !== e.target.value) {
+                e.target.value = sóloDígitos;
+            }
+        });
+
+        // 3) Manejar pegado: solo insertar los dígitos del clipboard
+        qty.addEventListener('paste', e => {
+            e.preventDefault();
+            const texto = (e.clipboardData || window.clipboardData).getData('text');
+            const dígitos = texto.replace(/\D/g, '');
+            // inserta manualmente
+            document.execCommand('insertText', false, dígitos);
+        });
+
+        // 4) Tu setCustomValidity para número inválido (por si acaso)
+        qty.addEventListener('invalid', e => {
+            if (e.target.validity.badInput) {
+                e.target.setCustomValidity('Por favor ingresa un número válido de libros.');
+            }
+        });
+        qty.addEventListener('input', e => {
+            e.target.setCustomValidity('');
+        });
+    </script>
+
+    <script>
+        const valor = document.getElementById('valorReposicionInput');
+
+        // 1) Prevenir teclas inválidas: sólo dígitos, punto y teclas de control
+        valor.addEventListener('keydown', e => {
+            const navKeys = [
+                'Backspace', 'Tab', 'ArrowLeft', 'ArrowRight',
+                'Delete', 'Home', 'End'
+            ];
+            if (navKeys.includes(e.key)) return;
+
+            // permitir un solo punto decimal
+            if (e.key === '.') {
+                if (valor.value.includes('.')) e.preventDefault();
+                return;
+            }
+
+            // si no es dígito 0–9, bloquea
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // 2) Al cambiar (input), limpia cualquier carácter que no sea dígito o punto
+        valor.addEventListener('input', e => {
+            let txt = e.target.value.replace(/[^0-9.]/g, '');
+            const partes = txt.split('.');
+            if (partes.length > 2) {
+                // si pusieron varios puntos, dejamos sólo el primero
+                txt = partes[0] + '.' + partes.slice(1).join('');
+            }
+            if (txt !== e.target.value) {
+                e.target.value = txt;
+            }
+        });
+
+        // 3) En el pegado, inserta sólo dígitos y punto
+        valor.addEventListener('paste', e => {
+            e.preventDefault();
+            const clip = (e.clipboardData || window.clipboardData).getData('text');
+            let txt = clip.replace(/[^0-9.]/g, '');
+            const partes = txt.split('.');
+            if (partes.length > 2) {
+                txt = partes[0] + '.' + partes.slice(1).join('');
+            }
+            document.execCommand('insertText', false, txt);
+        });
+    </script>
+
+   
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const contenedor = document.getElementById("contenedor-autores");
+            const botonAgregar = document.getElementById("agregar-autor");
+            const formulario = document.querySelector("form");
+
+            function mostrarErrorSweet(texto) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de validación',
+                    text: texto,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#765E49',
+                    background: '#FAFAF8'
+                });
+            }
+
+            botonAgregar.addEventListener("click", () => {
+                const selects = contenedor.querySelectorAll("select");
+                const ultimo = selects[selects.length - 1];
+                if (ultimo.value === "") {
+                    mostrarErrorSweet("Debe seleccionar un autor antes de agregar otro.");
+                    return;
+                }
+                const valores = Array.from(selects).map(s => s.value);
+                if (new Set(valores).size !== valores.length) {
+                    mostrarErrorSweet("Hay autores duplicados. Corríjalos antes de agregar otro.");
+                    return;
+                }
+                const nuevo = contenedor.firstElementChild.cloneNode(true);
+                nuevo.querySelector("select").value = "";
+                contenedor.appendChild(nuevo);
+            });
+
+            contenedor.addEventListener("click", e => {
+                if (e.target.classList.contains("eliminar-autor")) {
+                    const selects = contenedor.querySelectorAll(".autor-select");
+                    if (selects.length > 1) {
+                        e.target.closest(".autor-select").remove();
+                    } else {
+                        mostrarErrorSweet("Debe haber al menos un autor seleccionado.");
+                    }
+                }
+            });
+
+            formulario.addEventListener("submit", e => {
+                const selects = contenedor.querySelectorAll("select");
+                const valores = Array.from(selects).map(s => s.value.trim());
+                if (valores.some(v => v === "")) {
+                    mostrarErrorSweet("Debe seleccionar un autor en todos los campos.");
+                    e.preventDefault();
+                    return;
+                }
+                if (new Set(valores).size !== valores.length) {
+                    mostrarErrorSweet("No se permiten autores duplicados.");
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const radios = Array.from(document.querySelectorAll('input[name="SelectedOperation"]'));
+            const qty = document.getElementById('qtyInput');
+            const btnInc = document.getElementById('btn-increment');
+            const btnDec = document.getElementById('btn-decrement');
+
+            function updateQtyState() {
+                const oneChecked = radios.some(r => r.checked);
+
+                // habilita/deshabilita los controles
+                qty.disabled = !oneChecked;
+                btnInc.disabled = !oneChecked;
+                btnDec.disabled = !oneChecked;
+
+                // usando jQuery Validate, removemos o agregamos la regla 'required'
+                if (oneChecked) {
+                    // cuando activo, lo marco como obligatorio
+                    qty.setAttribute("required", "");
+                } else {
+                    // vuelve a añadir la regla required
+                    // cuando desactivo, quito la obligación y limpio errores
+                    qty.removeAttribute("required");
+                    qty.value = "";
+                    const err = document.querySelector('span[data-valmsg-for="Quantity"]');
+                    if (err) err.textContent = "";
+                }
+            }
+
+            // convierte a los radios en toggleable
+            radios.forEach(radio => {
+                radio.dataset.waschecked = 'false';
+                radio.addEventListener('click', function (e) {
+                    if (this.dataset.waschecked === 'true') {
+                        this.checked = false;
+                        this.dataset.waschecked = 'false';
+                    } else {
+                        radios.forEach(r => r.dataset.waschecked = 'false');
+                        this.dataset.waschecked = 'true';
+                    }
+                    updateQtyState();
+                    e.stopPropagation();
+                });
+                radio.addEventListener('change', updateQtyState);
+            });
+
+            // estado inicial
+            updateQtyState();
+        });
+    </script>
+
+}

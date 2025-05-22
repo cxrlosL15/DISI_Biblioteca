@@ -1,0 +1,131 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Libros.IndexModel
+
+@{
+    ViewData["Title"] = "Libros";
+}
+
+<h1>Libros</h1>
+
+<form method="get" class="d-flex align-items-center mb-3">
+    <input type="text"
+           name="SearchString"
+           value="@Model.SearchString"
+           class="form-control me-2"
+           placeholder="Buscar libro..." />
+
+    <button type="submit" class="btn btn-primary me-2">
+        Buscar
+    </button>
+
+    <a asp-page="./Index" class="btn btn-secondary">
+        Limpiar
+    </a>
+</form>
+
+<div class="d-flex justify-content-start mb-4">
+<a asp-page="Create"
+   class="btn btn-success">
+    + Nuevo
+</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Editorial</th>
+            <th>Autor</th>
+            <th>Categoría</th>
+            <th>Género</th>
+            <th>Total de libros</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Libro) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdEditorialNavigation.Nombre)
+            </td>
+            <td>
+                @if (item.LibroAutores != null && item.LibroAutores.Any())
+                {
+                    foreach (var libroAutor in item.LibroAutores)
+                    {
+                        <span>
+                        @(libroAutor.Autor?.Nombres)
+                        @(libroAutor.Autor?.ApellidoP)
+                        @(libroAutor.Autor?.ApellidoM)
+                        </span><br />
+                    }
+                }
+                else { <span>Sin autores asignados</span> }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCategoriasNavigation.Categoria1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdGenerosNavigation.Generos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDisponibilidadNavigation.TotalLibros)
+            </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.IdLibro" class="btn btn-sm btn-primary me-1">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a asp-page="./Details" asp-route-id="@item.IdLibro" class="btn btn-sm btn-secondary me-1">
+                        <i class="fas fa-info-circle"></i> Detalles
+                    </a>
+                    <!-- Nuevo form para borrado lógico -->
+                    <form method="post"
+                          asp-page-handler="Eliminar"
+                          asp-route-id="@item.IdLibro"
+                          class="d-inline">
+                        <button type="submit"
+                                class="btn btn-sm btn-danger delete-btn"
+                                data-title="@item.Titulo">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                    </form>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.delete-btn').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();                // evitamos el submit inmediato
+                    var form = btn.closest('form');    // el form que contiene este botón
+                    var title = btn.getAttribute('data-title') || 'este libro';
+
+                    Swal.fire({
+                        title: '¿Eliminar?',
+                        text: '¿Seguro que quieres eliminar "' + title + '"?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();               // solo si confirma, hacemos el POST
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

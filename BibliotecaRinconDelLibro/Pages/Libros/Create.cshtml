@@ -1,0 +1,330 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Libros.CreateModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Create";
+    var imagenTemporal = ViewData["ImagenTemporal"] as string;
+}
+
+<h1>Create</h1>
+
+<h4>Libro</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Libro.Titulo" class="control-label">Título</label>
+                <input asp-for="Libro.Titulo" class="form-control" />
+                <span asp-validation-for="Libro.Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.ValorReposicion" class="control-label">Valor de Reposición</label>
+                <input asp-for="Libro.ValorReposicion" id="valorReposicionInput" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Libro.ValorReposicion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Total de Libros</label>
+                <input asp-for="NuevaDisponibilidad.TotalLibros" id="totalLibrosInput" class="form-control" type="number" />
+                <span asp-validation-for="NuevaDisponibilidad.TotalLibros" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.FechaDeImpresion" class="control-label">Fecha de Impresión</label>
+                <input asp-for="Libro.FechaDeImpresion" class="form-control" type="date" />
+                <span asp-validation-for="Libro.FechaDeImpresion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdEditorial" class="control-label">Editorial</label>
+                <select asp-for="Libro.IdEditorial" class="form-control" asp-items="@(ViewData["IdEditorial"] as SelectList)">
+                    <option value="">Seleccione una editorial</option>
+                </select>
+                <span asp-validation-for="Libro.IdEditorial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdCategorias" class="control-label">Categoría</label>
+                <select asp-for="Libro.IdCategorias" class="form-control" asp-items="@(ViewData["IdCategorias"] as SelectList)">
+                    <option value="">Seleccione una categoría</option>
+                </select>
+                <span asp-validation-for="Libro.IdCategorias" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdGeneros" class="control-label">Género</label>
+                <select asp-for="Libro.IdGeneros" class="form-control" asp-items="@(ViewData["IdGeneros"] as SelectList)">
+                    <option value="">Seleccione un género</option>
+                </select>
+                <span asp-validation-for="Libro.IdGeneros" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Libro.IdUbicacion" class="control-label">Ubicación</label>
+                <select asp-for="Libro.IdUbicacion" class="form-control" asp-items="@(ViewData["IdUbicacion"] as SelectList)">
+                    <option value="">Seleccione una ubicación</option>
+                </select>
+                <span asp-validation-for="Libro.IdUbicacion" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label class="control-label">Autores</label>
+
+                <div id="contenedor-autores">
+                    <!-- Se genera al menos un select al cargar la vista -->
+                    <div class="input-group mb-2 autor-select">
+                        <select class="form-control" name="AutoresSeleccionados[]" required>
+                            <option value="">Seleccione un autor...</option>
+                            @foreach (var autor in (IEnumerable<SelectListItem>)ViewData["IdAutores"])
+                            {
+                                <option value="@autor.Value">@autor.Text</option>
+                            }
+                        </select>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-danger btn-sm eliminar-autor">X</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-sm mt-1" id="agregar-autor">Agregar otro autor</button>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Imagen" class="control-label">Imagen del Libro</label>
+                <input asp-for="Imagen" class="form-control" type="file" accept="image/*" onchange="mostrarVistaPrevia(this)" />
+                <span asp-validation-for="Imagen" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+               <img id="vistaPrevia" src="@(imagenTemporal ?? "#")" alt="Vista previa"
+                    style="max-width: 200px; @(imagenTemporal != null ? "" : "display: none;")" />
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+<style>
+    /* Oculta las flechas en inputs tipo number (para Chrome, Safari, Edge) */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Para Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+@section Scripts 
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script> @*IMAGENES*@
+            function mostrarErrorSweet(texto) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de validación',
+                    text: texto,
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#765E49',
+                    background: '#FAFAF8'
+                });
+            }
+    function mostrarVistaPrevia(input) {
+        try {
+            const archivo = input.files && input.files[0];
+            const vistaPrevia = document.getElementById('vistaPrevia');
+
+            if (!archivo) {
+                vistaPrevia.src = "#";
+                vistaPrevia.style.display = 'none';
+                return;
+            }
+
+            if (!archivo.type.startsWith('image/')) {
+                mostrarErrorSweet("El archivo seleccionado no es una imagen válida.");
+                input.value = "";
+                vistaPrevia.style.display = 'none';
+                return;
+            }
+
+            // Limpiar validación si el archivo es válido
+            const mensajeValidacion = document.querySelector('span[data-valmsg-for="Imagen"]');
+            if (mensajeValidacion) {
+                mensajeValidacion.innerText = "";
+                input.setCustomValidity(""); // Limpia error personalizado en HTML5 si lo hay
+            }
+
+            const lector = new FileReader();
+            lector.onload = function (e) {
+                vistaPrevia.src = e.target.result;
+                vistaPrevia.style.display = 'block';
+            };
+            lector.onerror = function () {
+                mostrarErrorSweet("Error al cargar la vista previa.");
+            };
+            lector.readAsDataURL(archivo);
+        } catch (e) {
+            console.error("Error en vista previa:", e);
+        }
+    }
+    </script>
+
+    <script> @*IMAGENES*@
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const inputImagen = document.querySelector('input[type="file"][name="Imagen"]');
+            const mensajeValidacion = document.querySelector('span[data-valmsg-for="Imagen"]');
+
+            if (!inputImagen || !inputImagen.files || inputImagen.files.length === 0) {
+                e.preventDefault(); // Evita el envío del formulario
+                if (mensajeValidacion) {
+                    mensajeValidacion.innerText = "La imagen del libro es obligatoria.";
+                }
+                inputImagen.focus();
+            }
+        });
+    </script>
+
+
+    <script> @*AUTORES*@
+        document.addEventListener("DOMContentLoaded", function () {
+            const contenedor = document.getElementById("contenedor-autores");
+            const botonAgregar = document.getElementById("agregar-autor");
+            const formulario = document.querySelector("form");
+
+                function mostrarErrorSweet(texto) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de validación',
+                        text: texto,
+                        confirmButtonText: 'Ok',
+                        confirmButtonColor: '#765E49', 
+                        background: '#FAFAF8'
+                    });
+                }
+
+            // Clonar el bloque de select
+            botonAgregar.addEventListener("click", function () {
+                const selects = contenedor.querySelectorAll("select");
+                const ultimo = selects[selects.length - 1];
+
+                if (ultimo.value === "") {
+                    mostrarErrorSweet("Debe seleccionar un autor antes de agregar otro.");
+                    return;
+                }
+
+                // Verificar duplicados
+                const valores = Array.from(selects).map(s => s.value);
+                if (new Set(valores).size !== valores.length) {
+                    mostrarErrorSweet("Hay autores duplicados. Corríjalos antes de agregar otro.");
+                    return;
+                }
+
+                const nuevo = contenedor.firstElementChild.cloneNode(true);
+                const selectNuevo = nuevo.querySelector("select");
+                selectNuevo.value = "";
+
+                contenedor.appendChild(nuevo);
+            });
+
+            // Eliminar select
+            contenedor.addEventListener("click", function (e) {
+                if (e.target.classList.contains("eliminar-autor")) {
+                    const selects = contenedor.querySelectorAll(".autor-select");
+                    if (selects.length > 1) {
+                        e.target.closest(".autor-select").remove();
+                    } else {
+                        mostrarErrorSweet("Debe haber al menos un autor seleccionado.");
+                    }
+                }
+            });
+                // Validación antes de enviar el formulario
+                formulario.addEventListener("submit", function (e) {
+                    const selects = contenedor.querySelectorAll("select");
+                    const valores = Array.from(selects).map(s => s.value.trim());
+
+                    // Validar vacíos
+                    if (valores.some(v => v === "")) {
+                        mostrarErrorSweet("Debe seleccionar un autor en todos los campos.");
+                        e.preventDefault();
+                        return;
+                    }
+
+                    if (new Set(valores).size !== valores.length) {
+                        mostrarErrorSweet("No se permiten autores duplicados.");
+                        e.preventDefault();
+                        return;
+                    }
+                });
+        });
+    </script>
+
+    <script>
+        // --- Funciones genéricas de filtrado para entradas de númericas---
+        function attachIntegerFilter(el) {
+            if (!el) return;
+            el.addEventListener('keydown', e => {
+                const nav = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Home', 'End'];
+                if (nav.includes(e.key)) return;
+                if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+            });
+            el.addEventListener('input', e => {
+                const clean = e.target.value.replace(/\D/g, '');
+                if (clean !== e.target.value) e.target.value = clean;
+            });
+            el.addEventListener('paste', e => {
+                e.preventDefault();
+                const txt = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+                document.execCommand('insertText', false, txt);
+            });
+        }
+
+        function attachDecimalFilter(el) {
+            if (!el) return;
+            el.addEventListener('keydown', e => {
+                const nav = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Home', 'End'];
+                if (nav.includes(e.key)) return;
+                if (e.key === '.') {
+                    if (el.value.includes('.')) e.preventDefault();
+                    return;
+                }
+                if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+            });
+            el.addEventListener('input', e => {
+                let txt = e.target.value.replace(/[^0-9.]/g, '');
+                const parts = txt.split('.');
+                if (parts.length > 2) txt = parts[0] + '.' + parts.slice(1).join('');
+                if (txt !== e.target.value) e.target.value = txt;
+            });
+            el.addEventListener('paste', e => {
+                e.preventDefault();
+                let txt = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9.]/g, '');
+                const parts = txt.split('.');
+                if (parts.length > 2) txt = parts[0] + '.' + parts.slice(1).join('');
+                document.execCommand('insertText', false, txt);
+            });
+        }
+
+        // --- Montaje sobre varios inputs ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // ids de campos integer-only
+            ['qtyInput', /* agrega aquí cualquier otro id de integer */]
+                .forEach(id => attachIntegerFilter(document.getElementById(id)));
+
+            // ids de campos decimal
+            ['valorReposicionInput', 'totalLibrosInput' /* otros id de decimales */]
+                .forEach(id => attachDecimalFilter(document.getElementById(id)));
+        });
+    </script>
+
+
+}

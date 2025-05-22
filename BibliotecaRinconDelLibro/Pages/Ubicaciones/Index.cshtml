@@ -1,0 +1,211 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Ubicaciones.IndexModel
+
+@{
+    ViewData["Title"] = "Ubicaciones";
+}
+
+<h1>Ubicaciones</h1>
+
+<form id="searchForm" method="get" class="d-flex align-items-center mb-3">
+    <input type="text"
+           name="SearchString"
+           id="searchInput"
+           value="@Model.SearchString"
+           class="form-control me-2"
+           placeholder="Buscar ubicación..." />
+
+    <button type="submit" class="btn btn-primary me-2">
+        Buscar
+    </button>
+
+    <a asp-page="./Index" class="btn btn-secondary">
+        Limpiar
+    </a>
+</form>
+
+<!-- Botón Crear abajo -->
+<div class="d-flex justify-content-start mb-4">
+    <button type="button"
+            class="btn btn-success ml-auto"
+            data-bs-toggle="modal"
+            data-bs-target="#createModal">
+        + Nueva
+    </button>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Pasillo</th>
+            <th>Estante</th>
+            <th class="text-right">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ubic in Model.Ubicaciones)
+        {
+            <tr>
+                <td>@ubic.Pasillo</td>
+                <td>@ubic.Estante</td>
+                <td class="text-right">
+                    <button type="button"
+                            class="btn btn-sm btn-primary me-1 edit-btn"
+                            data-id="@ubic.IdUbicacion"
+                            data-pasillo="@ubic.Pasillo"
+                            data-estante="@ubic.Estante"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal">
+                        Editar
+                    </button>
+                    <form method="post"
+                          asp-page-handler="Delete"
+                          asp-route-id="@ubic.IdUbicacion"
+                          class="d-inline delete-form">
+                        <button type="button"
+                                class="btn btn-sm btn-danger delete-btn"
+                                data-name="@($"{ubic.Pasillo} / {ubic.Estante}")">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal de Crear -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Nueva Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form id="createForm" method="post" asp-page-handler="Create" novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="CreateUbicacione.Pasillo" class="form-label"></label>
+                        <input asp-for="CreateUbicacione.Pasillo" class="form-control" />
+                        <span asp-validation-for="CreateUbicacione.Pasillo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CreateUbicacione.Estante" class="form-label"></label>
+                        <input asp-for="CreateUbicacione.Estante" class="form-control" />
+                        <span asp-validation-for="CreateUbicacione.Estante" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Editar -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form id="editForm" method="post" asp-page-handler="Edit" novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body">
+                    <input type="hidden" asp-for="EditUbicacione.IdUbicacion" />
+                    <div class="mb-3">
+                        <label asp-for="EditUbicacione.Pasillo" class="form-label"></label>
+                        <input asp-for="EditUbicacione.Pasillo" class="form-control" />
+                        <span asp-validation-for="EditUbicacione.Pasillo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditUbicacione.Estante" class="form-label"></label>
+                        <input asp-for="EditUbicacione.Estante" class="form-control" />
+                        <span asp-validation-for="EditUbicacione.Estante" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const form = btn.closest('form');
+                const name = btn.dataset.name;
+                Swal.fire({
+                    title: '¿Eliminar ubicación?',
+                    text: `¿Seguro que deseas borrar "${name}"?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then(result => {
+                    if (result.isConfirmed) form.submit();
+                });
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Auto-submit al vaciar búsqueda
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', () => {
+                if (!searchInput.value) document.getElementById('searchForm').submit();
+            });
+
+            // Abrir modal de edición con datos
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id      = btn.getAttribute('data-id');
+                    const pasillo = btn.getAttribute('data-pasillo');
+                    const estante = btn.getAttribute('data-estante');
+                    document.querySelector('#editForm input[name="EditUbicacione.IdUbicacion"]').value = id;
+                    document.querySelector('#editForm input[name="EditUbicacione.Pasillo"]').value     = pasillo;
+                    document.querySelector('#editForm input[name="EditUbicacione.Estante"]').value     = estante;
+                });
+            });
+
+            // Manejo de respuestas AJAX
+            function handleResponse(resp) {
+                if (resp.success) {
+                    location.reload();
+                } else {
+                    resp.errors.forEach(err => {
+                        const fld = document.querySelector(`[name="${err.field}"]`);
+                        if (fld) {
+                            const dv = document.createElement('div');
+                            dv.className = 'text-danger';
+                            dv.innerText = err.messages.join(', ');
+                            fld.parentNode.appendChild(dv);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Reabrir modal si hubo error de validación
+        @if (Model.ShowCreateModal)
+        {
+            <text>new bootstrap.Modal(document.getElementById('createModal')).show();</text>
+        }
+        @if (Model.ShowEditModal)
+        {
+            <text>new bootstrap.Modal(document.getElementById('editModal')).show();</text>
+        }
+    </script>
+}

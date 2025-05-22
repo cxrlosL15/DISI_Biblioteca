@@ -1,0 +1,233 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Autores.IndexModel
+
+@{
+    ViewData["Title"] = "Autores";
+}
+
+<h1>Autores</h1>
+
+<!-- Buscador: input–Buscar–Limpiar en la misma fila -->
+<form id="searchForm" method="get" class="d-flex align-items-center mb-3">
+    <input type="text"
+           name="SearchString"
+           id="searchInput"
+           value="@Model.SearchString"
+           class="form-control me-2"
+           placeholder="Buscar autor..." />
+
+    <button type="submit" class="btn btn-primary me-2">
+        Buscar
+    </button>
+
+    <a asp-page="./Index" class="btn btn-secondary">
+        Limpiar
+    </a>
+</form>
+
+<!-- Botón Crear abajo -->
+<div class="d-flex justify-content-start mb-4">
+    <button type="button"
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#createModal">
+        + Nuevo
+    </button>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th class="text-right">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var autor in Model.Autores)
+        {
+            <tr>
+                <td>@autor.Nombres</td>
+                <td>@autor.ApellidoP</td>
+                <td>@autor.ApellidoM</td>
+                <td class="text-right">
+                    <button type="button"
+                            class="btn btn-sm btn-primary me-1 edit-btn"
+                            data-id="@autor.IdAutores"
+                            data-nombres="@autor.Nombres"
+                            data-apellido-p="@autor.ApellidoP"
+                            data-apellido-m="@autor.ApellidoM"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal">
+                        Editar
+                    </button>
+                    <form method="post"
+                          asp-page-handler="Delete"
+                          asp-route-id="@autor.IdAutores"
+                          class="d-inline delete-form">
+                        <button type="button"
+                                class="btn btn-sm btn-danger delete-btn"
+                                data-name="@($"{autor.Nombres} {autor.ApellidoP} {autor.ApellidoM}")">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal Crear -->
+<div class="modal fade"
+     id="createModal"
+     tabindex="-1"
+     aria-labelledby="createModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Nuevo Autor</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+            </div>
+            <form id="createForm"
+                  method="post"
+                  asp-page-handler="Create"
+                  novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="CreateAutore.Nombres" class="form-label"></label>
+                        <input asp-for="CreateAutore.Nombres" class="form-control" />
+                        <span asp-validation-for="CreateAutore.Nombres" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CreateAutore.ApellidoP" class="form-label"></label>
+                        <input asp-for="CreateAutore.ApellidoP" class="form-control" />
+                        <span asp-validation-for="CreateAutore.ApellidoP" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CreateAutore.ApellidoM" class="form-label"></label>
+                        <input asp-for="CreateAutore.ApellidoM" class="form-control" />
+                        <span asp-validation-for="CreateAutore.ApellidoM" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal fade"
+     id="editModal"
+     tabindex="-1"
+     aria-labelledby="editModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Autor</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+            </div>
+            <form id="editForm"
+                  method="post"
+                  asp-page-handler="Edit"
+                  novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body">
+                    <input type="hidden" asp-for="EditAutore.IdAutores" />
+                    <div class="mb-3">
+                        <label asp-for="EditAutore.Nombres" class="form-label"></label>
+                        <input asp-for="EditAutore.Nombres" class="form-control" />
+                        <span asp-validation-for="EditAutore.Nombres" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditAutore.ApellidoP" class="form-label"></label>
+                        <input asp-for="EditAutore.ApellidoP" class="form-control" />
+                        <span asp-validation-for="EditAutore.ApellidoP" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditAutore.ApellidoM" class="form-label"></label>
+                        <input asp-for="EditAutore.ApellidoM" class="form-control" />
+                        <span asp-validation-for="EditAutore.ApellidoM" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Confirmación SweetAlert2 en Eliminar
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const form = btn.closest('form');
+                const name = btn.dataset.name;
+                Swal.fire({
+                    title: '¿Eliminar autor?',
+                    text: `¿Seguro que deseas borrar "${name}"?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then(result => {
+                    if (result.isConfirmed) form.submit();
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto-submit búsqueda al vaciar
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', () => {
+                if (!searchInput.value) document.getElementById('searchForm').submit();
+            });
+
+            // Precarga modal de edición
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelector('#editForm input[name="EditAutore.IdAutores"]').value = btn.dataset.id;
+                    document.querySelector('#editForm input[name="EditAutore.Nombres"]').value = btn.dataset.nombres;
+                    document.querySelector('#editForm input[name="EditAutore.ApellidoP"]').value = btn.dataset.apellidoP;
+                    document.querySelector('#editForm input[name="EditAutore.ApellidoM"]').value = btn.dataset.apellidoM;
+                });
+            });
+        });
+
+        @if (Model.ShowCreateModal)
+        {
+            <text>new bootstrap.Modal(document.getElementById('createModal')).show(); </text>
+        }
+        @if (Model.ShowEditModal)
+        {
+            <text>new bootstrap.Modal(document.getElementById('editModal')).show(); </text>
+        }
+    </script>
+}
