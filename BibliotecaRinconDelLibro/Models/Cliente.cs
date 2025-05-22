@@ -12,35 +12,45 @@ public partial class Cliente
     [Column("id_clientes")]
     public int IdClientes { get; set; }
 
+    [Required(ErrorMessage = "Favor de ingresar un nombre.")]
     [Column("nombre")]
     [StringLength(255)]
     [Unicode(false)]
-    public string? Nombre { get; set; }
+    public string? Nombre { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "Favor de ingresar un apellido.")]
     [Column("apellidoP")]
     [StringLength(255)]
     [Unicode(false)]
-    public string? ApellidoP { get; set; }
+    [Display(Name = "Apellido Paterno")]
+    public string? ApellidoP { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "Favor de ingresar un apellido.")]
     [Column("apellidoM")]
     [StringLength(255)]
     [Unicode(false)]
-    public string? ApellidoM { get; set; }
+    [Display(Name = "Apellido Materno")]
+    public string? ApellidoM { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "El correo es obligatorio.")]
+    [EmailAddress(ErrorMessage = "Ingrese un correo válido.")]
     [Column("correo")]
     [StringLength(255)]
     [Unicode(false)]
-    public string? Correo { get; set; }
+    public string? Correo { get; set; } = string.Empty;
 
     [Column("id_direccion")]
+    [Display(Name = "Dirección")]
     public int? IdDireccion { get; set; }
 
+    [Required(ErrorMessage = "La valoración es obligatoria.")]
     [StringLength(255)]
     [Unicode(false)]
     public string? Valoracion { get; set; }
 
     [ForeignKey("IdDireccion")]
     [InverseProperty("Clientes")]
+    [Display(Name = "Dirección")]
     public virtual Direccion? IdDireccionNavigation { get; set; }
 
     public string DireccionCompleta
