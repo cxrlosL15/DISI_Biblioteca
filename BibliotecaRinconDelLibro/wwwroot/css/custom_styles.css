@@ -1,0 +1,355 @@
+﻿/* wwwroot/css/custom_styles.css */
+
+:root {
+    --color-coyote: #765E49;
+    --color-bone: #E5E0CF;
+    --color-seasalt: #FAFAF8; /* Fondo principal de la página */
+    --color-reseda-green: #6F8249;
+    --color-oxford-blue: #0B0F27; /* Color de texto principal y elementos oscuros */
+
+    --font-titulares: 'Playfair Display', serif;
+    --font-subtitulares: 'Montserrat', sans-serif;
+    --font-cuerpo: 'Open Sans', sans-serif;
+    /* Tamaños de fuente base */
+    --font-size-base: 16px;
+    --font-size-h1: 2.8rem;
+    --font-size-h2: 2.2rem;
+    --font-size-h3: 1.8rem;
+}
+
+body {
+    font-family: var(--font-cuerpo);
+    background-color: var(--color-seasalt);
+    color: var(--color-oxford-blue);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container { /* Contenedor principal de Bootstrap, si lo usas */
+    flex: 1; /* Para que el footer quede abajo */
+}
+
+/* ----- ESTILOS DE CABECERA Y NAVEGACIÓN ----- */
+header .navbar {
+    background-color: var(--color-oxford-blue) !important; /* Navbar oscuro */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+header .navbar-brand {
+    font-family: var(--font-titulares);
+    color: var(--color-bone) !important;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+    header .navbar-brand:hover {
+        color: var(--color-seasalt) !important;
+    }
+
+header .nav-link {
+    font-family: var(--font-subtitulares);
+    color: var(--color-bone) !important;
+    font-weight: 400; /* Montserrat regular */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    margin: 0 0.5rem;
+}
+
+    header .nav-link:hover,
+    header .nav-link.active {
+        color: var(--color-seasalt) !important;
+    }
+
+header .navbar-toggler {
+    border-color: var(--color-bone);
+}
+
+header .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28229, 224, 207, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+
+/* ----- ESTILOS PARA LOGIN ----- */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 150px); /* Ajustar según altura de header y footer */
+    padding: 20px;
+}
+
+.login-form-wrapper {
+    background-color: #ffffff;
+    padding: 35px 45px;
+    border-radius: 12px; /* Bordes más redondeados */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 480px;
+    border-top: 5px solid var(--color-coyote); /* Detalle superior */
+}
+
+    .login-form-wrapper h2 {
+        font-family: var(--font-titulares);
+        color: var(--color-coyote);
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: var(--font-size-h2);
+        font-weight: 700; /* Playfair Display bold */
+    }
+
+/* ----- ESTILOS PARA PÁGINAS DE ADMINISTRACIÓN (Y CONTENEDORES GENÉRICOS) ----- */
+.page-container {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+    .page-container h2, .page-container h3 {
+        font-family: var(--font-titulares);
+        color: var(--color-oxford-blue);
+        margin-bottom: 1rem;
+    }
+
+    .page-container h2 {
+        font-size: var(--font-size-h2);
+        font-weight: 700;
+    }
+
+    .page-container h3 {
+        font-size: var(--font-size-h3);
+        font-weight: 700;
+        color: var(--color-coyote);
+        margin-top: 2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--color-bone);
+    }
+
+
+/* ----- ESTILOS DE FORMULARIOS GENERALES (APLICA A LOGIN Y ADMIN) ----- */
+.form-group {
+    margin-bottom: 1.5rem; /* Mayor espaciado */
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-family: var(--font-subtitulares); /* Montserrat para etiquetas */
+        color: var(--color-oxford-blue);
+        font-weight: 700; /* Montserrat bold para mejor legibilidad */
+        font-size: 0.9rem;
+    }
+
+.form-control {
+    font-family: var(--font-cuerpo);
+    width: 100%;
+    padding: 12px 18px; /* Más padding */
+    border: 1px solid var(--color-bone);
+    border-radius: 6px; /* Bordes más suaves */
+    box-sizing: border-box;
+    background-color: var(--color-seasalt);
+    color: var(--color-oxford-blue);
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .form-control:focus {
+        border-color: var(--color-coyote);
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(118, 94, 73, 0.2); /* Sombra Coyote */
+    }
+    /* Placeholder con color más sutil */
+    .form-control::placeholder {
+        color: #999; /* Gris medio */
+        opacity: 1;
+    }
+
+
+/* ----- BOTONES ----- */
+.btn {
+    font-family: var(--font-subtitulares);
+    padding: 12px 25px; /* Botones más grandes */
+    border-radius: 6px;
+    font-weight: 700; /* Montserrat bold */
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    cursor: pointer;
+}
+
+    .btn:active {
+        transform: translateY(1px);
+    }
+
+.btn-primary {
+    background-color: var(--color-coyote);
+    color: var(--color-seasalt);
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #5d4a38; /* Coyote más oscuro */
+        color: #fff;
+    }
+
+.btn-info { /* Ejemplo para botones de editar */
+    background-color: var(--color-reseda-green);
+    color: var(--color-seasalt);
+    border: none;
+}
+
+    .btn-info:hover {
+        background-color: #5a6e3b; /* Reseda Green más oscuro */
+        color: #fff;
+    }
+
+.btn.btn-link { /* Para botón de logout */
+    color: var(--color-bone);
+    text-decoration: none;
+    padding: 0.5rem 1rem; /* Consistente con nav-link */
+}
+
+    .btn.btn-link:hover {
+        color: var(--color-seasalt);
+        text-decoration: underline;
+    }
+
+
+/* ----- TABLAS (PARA GESTIÓN DE USUARIOS) ----- */
+.table {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+    font-family: var(--font-cuerpo);
+}
+
+    .table th, .table td {
+        text-align: left;
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--color-bone);
+    }
+
+    .table thead th {
+        font-family: var(--font-subtitulares); /* Montserrat para cabeceras de tabla */
+        background-color: var(--color-seasalt);
+        color: var(--color-coyote);
+        font-weight: 700; /* Montserrat bold */
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody tr:nth-of-type(even) { /* Filas pares con fondo sutil */
+        background-color: #fdfcf9; /* Un tono muy claro de seasalt o bone */
+    }
+
+    .table tbody tr:hover {
+        background-color: var(--color-bone); /* Hover con color bone */
+        color: var(--color-oxford-blue);
+    }
+
+
+/* ----- ALERTAS Y MENSAJES DE VALIDACIÓN ----- */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: var(--font-cuerpo);
+}
+
+.alert-danger, .text-danger, .validation-summary-errors li {
+    color: #842029; /* Rojo oscuro para texto */
+    background-color: #f8d7da; /* Fondo rosa claro */
+    border-color: #f5c2c7; /* Borde rosa más oscuro */
+}
+
+.validation-summary-errors ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+
+/* ----- FOOTER ----- */
+.footer {
+    background-color: var(--color-bone); /* Footer con color Bone */
+    padding: 1.5rem 0;
+    text-align: center;
+    margin-top: auto; /* Empuja el footer hacia abajo */
+}
+
+    .footer .container {
+        color: var(--color-coyote);
+    }
+
+    .footer a {
+        color: var(--color-oxford-blue);
+        font-weight: 700; /* Montserrat bold */
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            color: var(--color-reseda-green);
+            text-decoration: underline;
+        }
+
+/* ----- UTILIDADES ----- */
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+.my-4 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+}
+/* Para tablas anchas en móviles */
+
+/* Estilos para form-row si no usas Bootstrap grid */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -10px; /* Ajusta el espaciado */
+    margin-left: -10px; /* Ajusta el espaciado */
+}
+
+.form-group.col-md-6 { /* Asume que col-md-6 es para 2 columnas */
+    position: relative;
+    width: 100%;
+    padding-right: 10px; /* Ajusta el espaciado */
+    padding-left: 10px; /* Ajusta el espaciado */
+}
+
+@media (min-width: 768px) { /* Para pantallas medianas y grandes */
+    .form-group.col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
