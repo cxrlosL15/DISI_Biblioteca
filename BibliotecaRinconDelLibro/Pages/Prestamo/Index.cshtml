@@ -25,23 +25,19 @@
         @foreach (var item in Model.Prestamo)
         {
             <tr>
-               
                 <td>@item.FechaPrestamo.ToString("d")</td>
                 <td>@item.IdClientesNavigation?.NombreCompleto</td>
                 <td>@item.IdEstadoLibroNavigation?.DescripcionEstado</td>
                 <td>@item.IdLibroNavigation?.Titulo</td>
                 <td>@item.FechaDevolucion.ToString("d")</td>
-                <td>@item.IdEstadoPrestamo.</td>
+                <td>@item.IdEstadoPrestamo</td> <!-- Corregido -->
                 <td>@item.IdUsuarioNavigation?.NombreCompleto</td>
-                   <td>
+                <td>
                     <a asp-page="./Edit" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Ticket</a> |
-                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.IdPrestamo" style="display:inline;">
-                        <button type="submit" class="btn-eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este préstamo?')">Borrar</button>
-                    </form>
-
-                   </td>
+                    <a asp-page="./Details" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Ticket</a> 
+                </td>
             </tr>
+
         }
     </tbody>
 </table>
