@@ -68,8 +68,8 @@
             {
                 <tr>
                     <td>@prestamo.IdLibroNavigation?.Titulo</td>
-                    <td>@prestamo.FechaPrestamo?.ToString("dd/MM/yyyy")</td>
-                    <td>@prestamo.FechaDevolucion?.ToString("dd/MM/yyyy")</td>
+                    <td>@prestamo.FechaPrestamo.ToString("dd/MM/yyyy")</td>
+                    <td>@prestamo.FechaDevolucion.ToString("dd/MM/yyyy")</td>
                     <td>
                         @if (prestamo.Multa.Any())
                         {

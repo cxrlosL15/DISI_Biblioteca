@@ -32,4 +32,8 @@ public partial class Devolucione
     [ForeignKey("IdPrestamo")]
     [InverseProperty("Devoluciones")]
     public virtual Prestamo? IdPrestamoNavigation { get; set; }
+    
+    [Column("fecha_devolucion")]
+    [DataType(DataType.Date)]
+    public DateTime FechaDevolucion { get; set; }
 }

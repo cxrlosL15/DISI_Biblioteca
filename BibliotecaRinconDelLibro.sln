@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibliotecaRinconDelLibro", "BibliotecaRinconDelLibro\BibliotecaRinconDelLibro.csproj", "{0B9AAD40-B360-4AA8-B954-50590A332628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibliotecaRinconDelLibro.PasswordMigrator", "..\Biblioteca_Login\BibliotecaRinconDelLibro.PasswordMigrator\BibliotecaRinconDelLibro.PasswordMigrator.csproj", "{09E5B717-D5CE-49EA-9A14-02DB9FA09979}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibliotecaRinconDelLibro.PasswordMigrator", "BibliotecaRinconDelLibro.PasswordMigrator\BibliotecaRinconDelLibro.PasswordMigrator.csproj", "{09E5B717-D5CE-49EA-9A14-02DB9FA09979}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
