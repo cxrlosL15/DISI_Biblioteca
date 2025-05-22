@@ -67,7 +67,7 @@ namespace Biblioteca_Login.Pages
                 return Page();
             }
 
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("BibliotecaConnection");
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))

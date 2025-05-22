@@ -74,7 +74,7 @@ namespace Biblioteca_Login.Pages.Admin
         private async Task CargarRolesDisponiblesAsync()
         {
             RolesDisponibles.Clear();
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("BibliotecaConnection");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
@@ -99,7 +99,7 @@ namespace Biblioteca_Login.Pages.Admin
         private async Task CargarUsuariosAsync()
         {
             Usuarios.Clear();
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("BibliotecaConnection");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
@@ -211,7 +211,7 @@ namespace Biblioteca_Login.Pages.Admin
 
         private async Task<bool> EmailExisteAsync(string email)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("BibliotecaConnection");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();

@@ -1,5 +1,5 @@
 ﻿@page
-@model GestionUsuariosModel
+@model Biblioteca_Login.Pages.Admin.GestionUsuariosModel
 @{
     ViewData["Title"] = "Gestión de Usuarios";
 }
@@ -53,7 +53,7 @@
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label asp-for="NuevoUsuario.ApellidoM">Apellido Materno (Opcional)</label>
+                <label asp-for="NuevoUsuario.ApellidoM">Apellido Materno</label>
                 <input asp-for="NuevoUsuario.ApellidoM" class="form-control" />
                 <span asp-validation-for="NuevoUsuario.ApellidoM" class="text-danger"></span>
             </div>
