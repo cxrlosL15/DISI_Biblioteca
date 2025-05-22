@@ -26,7 +26,7 @@ namespace BibliotecaRinconDelLibro.Pages
             {
                 return NotFound();
             }
-
+            /*Prueba de cambios comentarios*/
             var disponibilidad = await _context.Disponibilidads.FirstOrDefaultAsync(m => m.IdDisponibilidad == id);
             if (disponibilidad == null)
             {
