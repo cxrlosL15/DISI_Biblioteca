@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures // Necesario para ViewContext si no está en _ViewImports.cshtml
+@using System.Security.Claims // Necesario para ClaimTypes
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,42 +11,71 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/siteLayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom_styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/MenuLateral.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/MenuHorizontal.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Biblioteca.styles.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/BibliotecaRinconDelLibro.styles.css" asp-append-version="true" /> *@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    @{
+        // Determinar si la página actual es la de Login. Esto debe ir ANTES de usar isLoginPage.
+        var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+        var isLoginPage = !string.IsNullOrEmpty(currentPage) && currentPage.Equals("/Login", StringComparison.OrdinalIgnoreCase);
+    }
+
     <header class="border-bottom bg-white shadow-sm px-3 py-2 d-flex align-items-center justify-content-between header">
-        <!-- Botón para ocultar/mostrar menú lateral -->
         <div class="d-flex align-items-center">
-            <button id="toggleSidebarBtn" class="btn btn-outline-secondary me-3">
-                <i class="bi bi-list"></i> <!-- Usando ícono de Bootstrap Icons -->
-            </button>
-        </div>
-
-        <!-- Centro: imágenes -->
-        <div class="d-flex align-items-center gap-3">
-            <img src="/Images/logo.png" alt="Logo 1" height="40">
-            <img src="/Images/name.png" alt="Logo 2" height="40">
-        </div>
-
-        <!-- Derecha: usuario + configuración + logout -->
-        <div class="d-flex align-items-center gap-3">
-            <span class="">username</span>
-            <form method="post" asp-page="/Logout" class="d-inline" onsubmit="return confirm('¿Seguro que quieres cerrar sesión?');">
-                <button type="submit" class="btn btn-sm btn-outline-danger">
-                    <i class="bi bi-box-arrow-right"></i>
+            @if (!isLoginPage) // Solo mostrar el botón del sidebar si NO es la página de Login
+            {
+                <button id="toggleSidebarBtn" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-list"></i>
                 </button>
-            </form>
+            }
+            else
+            {
+                <div style="width: 58px;"></div>
+            }
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <img src="~/Images/logo.png" alt="Logo 1" height="40">
+            <img src="~/Images/name.png" alt="Logo 2" height="40">
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            @if (!isLoginPage && User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <span class="">
+                    Hola, @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? User.Identity.Name)!
+                </span>
+                <form method="post" asp-page="/Logout" class="d-inline" onsubmit="return confirm('¿Seguro que quieres cerrar sesión?');">
+                    @* Añadir AntiForgeryToken si no está globalmente configurado para todos los POST *@
+                    @* @Html.AntiForgeryToken() *@
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </form>
+            }
+            else if (!isLoginPage) // Si no es la página de login y no está autenticado (será redirigido a login de todas formas)
+            {
+                <div style="min-width: 100px;"></div>
+            }
+            else // Es la página de login, no mostrar nada aquí o un placeholder de ancho similar
+            {
+                <div style="min-width: 100px;"></div>
+            }
         </div>
     </header>
 
     <div class="layout">
-        @await Html.PartialAsync("_MenuLateral")
+        @if (!isLoginPage) // Solo mostrar el menú lateral si NO es la página de Login
+        {
+            @await Html.PartialAsync("_MenuLateral")
+        }
 
-        <div class="main-content">
+        <div class="main-content @(isLoginPage ? "login-page-content" : "")">
+            @* Clase opcional para la página de login *@
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
@@ -53,58 +85,57 @@
     @*
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - BibliotecaRinconDelLibro - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - BibliotecaRinconDelLibro - 
+            @if (!isLoginPage)
+            {
+                <a asp-area="" asp-page="/Privacy">Privacy</a>
+            }
         </div>
     </footer>
     *@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    <script>
-        function toggleSubmenu(event) {
-            event.preventDefault();
-            const clickedItem = event.currentTarget.parentElement;
+    @if (!isLoginPage) // Solo ejecutar scripts de menú si NO es la página de Login y los elementos existen
+    {
+        <script>
+            function toggleSubmenu(event) {
+                event.preventDefault();
+                const clickedItem = event.currentTarget.parentElement;
 
-            // Cierra los otros submenús
-            document.querySelectorAll('.menu-item').forEach(item => {
-                if (item !== clickedItem) {
-                    item.classList.remove('active');
-                }
-            });
-
-            // Alterna el submenú del ítem actual
-            clickedItem.classList.toggle('active');
-        }
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const btn = document.getElementById("toggleSidebarBtn");
-            const menu = document.getElementById("menuLateral");
-
-            btn.addEventListener("click", function () {
-                menu.classList.toggle("oculto");
-                document.body.classList.toggle("sidebar-open");
-
-                btn.addEventListener("click", function () {
-                    const isNowHidden = menu.classList.toggle("oculto");
-                    document.body.classList.toggle("sidebar-open");
-
-                    if (isNowHidden) {
-                        // Reiniciar estado: quitar .active de todos los items del menú
-                        document.querySelectorAll(".menu-item").forEach(item => {
-                            item.classList.remove("active");
-                        });
+                // Cierra los otros submenús
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    if (item !== clickedItem) {
+                        item.classList.remove('active');
                     }
                 });
+                // Alterna el submenú del ítem actual
+                clickedItem.classList.toggle('active');
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const btn = document.getElementById("toggleSidebarBtn");
+                const menu = document.getElementById("menuLateral"); // Asegúrate que _MenuLateral.cshtml tenga un elemento con id="menuLateral"
+
+                if (btn && menu) { // Solo añadir listener si los elementos existen
+                    btn.addEventListener("click", function () {
+                        const isNowHidden = menu.classList.toggle("oculto");
+                        document.body.classList.toggle("sidebar-open");
+
+                        if (isNowHidden) {
+                            // Reiniciar estado: quitar .active de todos los items del menú
+                            document.querySelectorAll(".menu-item").forEach(item => {
+                                item.classList.remove("active");
+                            });
+                        }
+                    });
+                }
             });
-        });
-
-
-    </script>
-
+        </script>
+    }
 </body>
 </html>

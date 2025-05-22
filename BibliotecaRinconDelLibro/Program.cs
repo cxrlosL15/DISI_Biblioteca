@@ -8,6 +8,10 @@ builder.Services.AddRazorPages(options =>
 {
     // Esto protegería todas las páginas en la carpeta Admin
     options.Conventions.AuthorizeFolder("/Admin", "RequireAdminRole");
+    options.Conventions.AuthorizeFolder("/"); // Protege todas las páginas por defecto
+    options.Conventions.AllowAnonymousToPage("/Login"); // Permite acceso anónimo al Login
+    options.Conventions.AllowAnonymousToPage("/Error");
+    options.Conventions.AllowAnonymousToPage("/AccessDenied");
     // Puedes añadir autorización a páginas específicas si es necesario:
     // options.Conventions.AuthorizePage("/Admin/GestionUsuarios", "RequireAdminRole");
 });
@@ -17,11 +21,9 @@ builder.Services.AddDbContext<BibliotecaContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Login"; // Página a la que redirige si no está autenticado
-        options.LogoutPath = "/Logout"; // Página para cerrar sesión (crearemos una simple)
-        options.AccessDeniedPath = "/AccessDenied"; // Página si no tiene permisos
-        options.ExpireTimeSpan = TimeSpan.FromDays(7); // Tiempo de expiración de la cookie
-        options.SlidingExpiration = true; // Renueva la cookie si hay actividad
+        options.LoginPath = "/Login"; // Página de login
+        options.LogoutPath = "/Logout";
+        options.AccessDeniedPath = "/AccessDenied";
 
     });
 

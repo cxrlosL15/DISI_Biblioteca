@@ -42,15 +42,17 @@ namespace Biblioteca_Login.Pages
             public string Password { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl ?? Url.Content("~/");
-            // Si ya está autenticado y trata de ir a Login, redirigir (opcional)
-            if (User.Identity.IsAuthenticated)
+
+            if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                // Considera a dónde redirigir, quizás a una página de inicio o dashboard.
-                // Response.Redirect(ReturnUrl); 
+                // Si ya está logueado, lo mandamos a la página principal
+                return LocalRedirect(Url.Content("~/Index"));
             }
+            ErrorMessage = string.Empty;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -108,7 +110,7 @@ namespace Biblioteca_Login.Pages
 
                                     var authProperties = new AuthenticationProperties
                                     {
-                                        IsPersistent = true, // Recordar al usuario (opcional)
+                                        IsPersistent = false, // Recordar al usuario (opcional)
                                                              // ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7) // Duración de la cookie (opcional)
                                     };
 
@@ -122,7 +124,7 @@ namespace Biblioteca_Login.Pages
                                         return LocalRedirect(Url.Content("~/Admin/GestionUsuarios"));
                                     }
                                     // Redirigir a una página principal o dashboard para otros roles
-                                    return LocalRedirect(Url.Content("~/Index")); // Asumiendo que tienes una página Index
+                                    return LocalRedirect(returnUrl ?? Url.Content("~/Index")); // Asumiendo que tienes una página Index
                                 }
                                 else
                                 {
