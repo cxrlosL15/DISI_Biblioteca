@@ -1,0 +1,136 @@
+﻿/* Cargar fuente de Google Fonts (solo si la usas en _Layout.cshtml o por link externo) */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap');
+
+/* =====================================
+   Variables de color y tipografía
+   ===================================== */
+:root {
+    --color-coyote: #765E49;
+    --color-bone: #E5E0CF;
+    --color-reseda: #6F8249;
+    --color-oxford: #0B0F27;
+    --color-fondo: #FAFAF8;
+    --fuente-titular: 'Playfair Display', serif;
+    --fuente-subtitular: 'Montserrat', sans-serif;
+    --fuente-texto: 'Open Sans', sans-serif;
+}
+
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    font-family: var(--fuente-texto);
+    font-size: 1rem;
+    line-height: 1.6;
+    background-color: var(--color-fondo);
+    color: var(--color-oxford);
+    margin: 0;
+    padding: 0;
+    margin-bottom: 60px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #E5E0CF;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th {
+    background-color: #343a40;
+    color: black;
+    text-align: left;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+a {
+    color: #765E49;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: var(--color-reseda);
+        text-decoration: underline;
+    }
+
+.boton-personalizado {
+    background-color: #765E49; /* Cambia este valor por el color que desees */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+    .boton-personalizado:hover {
+        background-color: #D2B48C; /* Color al pasar el mouse */
+    }
+
+
+
+/* =====================================
+   Titulares y subtítulos
+   ===================================== */
+h1, h2, h3 {
+    font-family: var(--fuente-titular);
+    font-weight: 700;
+    color: var(--color-coyote);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+h4, h5, h6, nav, .subtitulo {
+    font-family: var(--fuente-subtitular);
+    font-weight: 600;
+    color: var(--color-reseda);
+}
+
+/* =====================================
+   Elementos interactivos
+   ===================================== */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* =====================================
+   Botones personalizados
+   ===================================== */
+.btn {
+    background-color: var(--color-coyote);
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    font-family: var(--fuente-subtitular);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+    .btn:hover {
+        background-color: var(--color-reseda);
+    }

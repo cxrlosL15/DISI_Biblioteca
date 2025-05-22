@@ -1,0 +1,129 @@
+﻿:root {
+    --color-coyote: #765E49;
+    --color-bone: #E5E0CF;
+    --color-reseda: #6F8249;
+    --color-oxford: #0B0F27;
+    --color-fondo: #FAFAF8;
+    --fuente-titular: 'Playfair Display', serif;
+    --fuente-subtitular: 'Montserrat', sans-serif;
+    --fuente-texto: 'Open Sans', sans-serif;
+}
+
+.layout {
+    display: flex;
+}
+
+
+
+
+
+/* =====================================
+   Menú Lateral
+   ===================================== */
+
+.menu-lateral {
+    position: fixed;
+    top: 60px; /* misma altura del header */
+    left: 0;
+    width: 250px;
+    background-color: var(--color-fondo);
+    padding-top: 10px;
+    height: calc(100vh - 60px); /* altura ajustada al header */
+    transition: transform 0.3s ease;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    z-index: 2000;
+}
+
+    .menu-lateral.oculto {
+        transform: translateX(-100%);
+        position: absolute;
+        z-index: 1000;
+    }
+
+/* Contenedor principal */
+.main-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    /* Ítems de nivel 1 */
+    .main-menu > li {
+        padding: 10px 20px;
+    }
+
+        /* Enlaces de ítems principales */
+        .main-menu > li > a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-oxford);
+            font-family: var(--fuente-subtitular);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+            .main-menu > li > a:hover {
+                background-color: var(--color-bone);
+                border-radius: 4px;
+            }
+
+/* Ítem activo (cuando se hace clic) */
+.menu-item.active > a {
+    background-color: var(--color-bone);
+    color: var( --color-coyote);
+    font-weight: 600;
+}
+
+/* Iconos */
+.main-menu img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Submenús */
+.submenu {
+    list-style: none;
+    padding-left: 30px;
+    margin-top: 5px;
+    display: none;
+}
+
+/* Mostrar submenú si el item está activo */
+.menu-item.active .submenu {
+    display: block;
+}
+
+/* Ítems de submenú */
+.submenu li {
+    padding: 5px 0;
+}
+
+/* Enlaces de submenú */
+.submenu a {
+    color: var(--color-coyote);
+    font-size: 0.9rem;
+}
+    /* Hover en submenú */
+    .submenu a:hover {
+        color: var(--color-reseda);
+    }
+
+
+
+
+
+/* =====================================
+   Contenido Principal
+   ===================================== */
+
+.main-content {
+    padding: 1rem;
+    padding-top: 70px;
+    transition: margin-left 0.3s ease;
+}
+
+body.sidebar-open .main-content {
+    margin-left: 250px;
+}
