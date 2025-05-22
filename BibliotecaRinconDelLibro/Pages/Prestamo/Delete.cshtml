@@ -1,0 +1,65 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Prestamo.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Prestamo</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prestamo.IdEstadoPrestamo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prestamo.IdEstadoPrestamo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prestamo.FechaPrestamo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prestamo.FechaPrestamo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prestamo.FechaDevolucion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prestamo.FechaDevolucion)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prestamo.IdClientesNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prestamo.IdClientesNavigation.IdClientes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prestamo.IdEstadoLibroNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prestamo.IdEstadoLibroNavigation.IdEstadoLibro)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prestamo.IdLibroNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prestamo.IdLibroNavigation.IdLibro)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Prestamo.IdUsuarioNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Prestamo.IdUsuarioNavigation.IdUsuario)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Prestamo.IdPrestamo" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

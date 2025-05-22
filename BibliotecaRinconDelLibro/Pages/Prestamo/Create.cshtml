@@ -1,0 +1,83 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Prestamo.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Crear nuevo préstamo</h1>
+
+<form method="post">
+
+    <div class="form-group">
+        <label>Cliente</label>
+        <select asp-for="Prestamo.IdClientes" class="form-control" asp-items="Model.Clientes"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Libro</label>
+        <select asp-for="Prestamo.IdLibro" class="form-control" asp-items="Model.Libros"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Estado del Libro</label>
+        <select asp-for="Prestamo.IdEstadoLibro" class="form-control" asp-items="Model.EstadosLibro"></select>
+    </div>
+
+   
+
+    <div class="form-group">
+        <label>Fecha de Préstamo</label>
+        <input asp-for="Prestamo.FechaPrestamo" class="form-control" type="date" value="@Model.Prestamo.FechaPrestamo.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="Prestamo.FechaPrestamo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Fecha de Devolución</label>
+        <input asp-for="Prestamo.FechaDevolucion" class="form-control" type="date" value="@Model.Prestamo.FechaDevolucion.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="Prestamo.FechaDevolucion" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Usuario</label>
+        <select asp-for="Prestamo.IdUsuario" class="form-control" asp-items="Model.Usuarios"></select>
+    </div>
+
+    
+    @if (!ViewData.ModelState.IsValid)
+    {
+            <div class="alert-warning">
+            @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                        <p>⚠ @modelError.ErrorMessage</p>
+            }
+            </div>
+    }
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+    </div>
+
+    <div>
+        <a asp-page="Index">Back to List</a>
+    </div>
+
+</form>
+
+
+<style>
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        padding: 12px;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

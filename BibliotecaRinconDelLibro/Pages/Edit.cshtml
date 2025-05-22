@@ -1,0 +1,55 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Disponibilidad</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Disponibilidad.IdDisponibilidad" />
+            <div class="form-group">
+                <label asp-for="Disponibilidad.IdLibro" class="control-label"></label>
+                <input asp-for="Disponibilidad.IdLibro" class="form-control" />
+                <span asp-validation-for="Disponibilidad.IdLibro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disponibilidad.TotalLibros" class="control-label"></label>
+                <input asp-for="Disponibilidad.TotalLibros" class="form-control" />
+                <span asp-validation-for="Disponibilidad.TotalLibros" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disponibilidad.CopiasPrestadas" class="control-label"></label>
+                <input asp-for="Disponibilidad.CopiasPrestadas" class="form-control" />
+                <span asp-validation-for="Disponibilidad.CopiasPrestadas" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disponibilidad.TotalDespuesPrestamos" class="control-label"></label>
+                <input asp-for="Disponibilidad.TotalDespuesPrestamos" class="form-control" />
+                <span asp-validation-for="Disponibilidad.TotalDespuesPrestamos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disponibilidad.IdPrestamo" class="control-label"></label>
+                <select asp-for="Disponibilidad.IdPrestamo" class="form-control" asp-items="ViewBag.IdPrestamo"></select>
+                <span asp-validation-for="Disponibilidad.IdPrestamo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

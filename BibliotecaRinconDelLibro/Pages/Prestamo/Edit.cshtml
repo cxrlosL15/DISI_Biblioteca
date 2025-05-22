@@ -1,0 +1,78 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Prestamo.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Prestamo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Prestamo.IdPrestamo" />
+
+            <div class="form-group">
+                <label>Cliente</label>
+                <select asp-for="Prestamo.IdClientes" class="form-control" asp-items="@(ViewData["IdClientes"] as SelectList)"></select>
+                <span asp-validation-for="Prestamo.IdClientes" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Libro</label>
+                <select asp-for="Prestamo.IdLibro" class="form-control" asp-items="@(ViewData["IdLibro"] as SelectList)"></select>
+                <span asp-validation-for="Prestamo.IdLibro" class="text-danger"></span>
+            </div>
+      
+            <div class="form-group">
+                <label>Fecha de prestamo</label>
+                <input asp-for="Prestamo.FechaPrestamo" class="form-control" type="date" />
+                <span asp-validation-for="Prestamo.FechaPrestamo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Fecha de devolución</label>
+                <input asp-for="Prestamo.FechaDevolucion" class="form-control" type="date" />
+                <span asp-validation-for="Prestamo.FechaDevolucion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Estado del libro</label>
+                <select asp-for="Prestamo.IdEstadoLibro" class="form-control" asp-items="@(ViewData["IdEstadoLibro"] as SelectList)"></select>
+                <span asp-validation-for="Prestamo.IdEstadoLibro" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Responsable</label>
+                <select asp-for="Prestamo.IdUsuario" class="form-control" asp-items="@(ViewData["IdUsuario"] as SelectList)"></select>
+                <span asp-validation-for="Prestamo.IdUsuario" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-custom" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+<style>
+    .btn-custom {
+        background-color: #765E49;
+        color: #FAFAF8;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+<style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,107 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Clientes.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles del cliente</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Nombre)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Nombre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.ApellidoP)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.ApellidoP)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.ApellidoM)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.ApellidoM)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Correo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Correo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Valoracion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Valoracion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.IdDireccionNavigation)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Cliente.DireccionCompleta
+        </dd>
+    </dl>
+</div>
+<hr />
+
+<h4>Historial de Préstamos</h4>
+
+@if (Model.Cliente.Prestamos.Any())
+{
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Título del Libro</th>
+                <th>Fecha Préstamo</th>
+                <th>Fecha Devolución</th>
+                <th>Multas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prestamo in Model.Cliente.Prestamos)
+            {
+                <tr>
+                    <td>@prestamo.IdLibroNavigation?.Titulo</td>
+                    <td>@prestamo.FechaPrestamo?.ToString("dd/MM/yyyy")</td>
+                    <td>@prestamo.FechaDevolucion?.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @if (prestamo.Multa.Any())
+                        {
+                            <ul class="mb-0">
+                                @foreach (var multa in prestamo.Multa)
+                                {
+                                    <li>
+                                        @multa.IdTipomultaNavigation?.Tipo - $@multa.Monto
+                                        <span class="@(multa.Pagado == true ? "text-success" : "text-danger")">
+                                            (@(multa.Pagado == true ? "Pagado" : "Pendiente"))
+                                        </span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Sin multas</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">Este cliente no tiene préstamos registrados.</p>
+}
+
+<hr />
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Cliente.IdClientes">Editar</a> |
+    <a asp-page="./Index">Regresar</a>
+</div>

@@ -1,0 +1,50 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="login-container"> @* Contenedor principal para aplicar estilos de fondo y centrado *@
+    <div class="login-form-wrapper"> @* Wrapper para el formulario en sí *@
+        <h2>@ViewData["Title"]</h2>
+        <form method="post" id="loginForm">
+            @if (!ViewData.ModelState.IsValid || !string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        @Model.ErrorMessage
+                        <br />
+                    }
+                    @foreach (var modelStateKey in ViewData.ModelState.Keys)
+                    {
+                        var modelStateVal = ViewData.ModelState[modelStateKey];
+                        foreach (var error in modelStateVal.Errors)
+                        {
+                            @error.ErrorMessage
+                            <br />
+                        }
+                    }
+                </div>
+            }
+
+            <div class="form-group">
+                <label asp-for="Input.Email">Correo Electrónico</label>
+                <input asp-for="Input.Email" class="form-control" placeholder="tu@correo.com" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password">Contraseña</label>
+                <input asp-for="Input.Password" class="form-control" placeholder="Tu contraseña" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

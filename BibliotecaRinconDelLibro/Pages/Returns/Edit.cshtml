@@ -1,0 +1,115 @@
+﻿@page "{id:int}"
+@model BibliotecaRinconDelLibro.Pages.Returns.EditModel
+@{
+    ViewData["Title"] = "Editar Devolución";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<style>
+    body {
+        background-color: #E5E0CF;
+        font-family: 'Open Sans', sans-serif;
+        color: #0B0F27;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: #765E49;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+
+    label {
+        font-weight: 600;
+        color: #0B0F27;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .btn-primary {
+        background-color: #765E49;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Open Sans', sans-serif;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0B0F27;
+        }
+
+    .btn-secondary {
+        background-color: #aaa;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-left: 1rem;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+        .btn-secondary:hover {
+            background-color: #6F8249;
+        }
+
+    .validation-summary-errors {
+        color: red;
+        margin-bottom: 1rem;
+        font-family: 'Open Sans', sans-serif;
+    }
+</style>
+
+
+<form method="post">
+    <input type="hidden" asp-for="Devolucion.IdDevoluciones" />
+    <div class="form-group">
+        <label asp-for="Devolucion.IdPrestamo"></label>
+        <input asp-for="Devolucion.IdPrestamo" class="form-control" />
+        <span asp-validation-for="Devolucion.IdPrestamo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Devolucion.Motivo"></label>
+        <input asp-for="Devolucion.Motivo" class="form-control" />
+        <span asp-validation-for="Devolucion.Motivo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Devolucion.IdEstadoRegreso" class="control-label"></label>
+        <select asp-for="Devolucion.IdEstadoRegreso" class="form-control"
+                asp-items="Model.DescripcionEstado">
+            <option value="">Seleccione una opción</option>
+        </select>
+        <span asp-validation-for="Devolucion.IdEstadoRegreso" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Devolucion.FechaDevolucion"></label>
+        <input asp-for="Devolucion.FechaDevolucion" class="form-control" />
+        <span asp-validation-for="Devolucion.FechaDevolucion" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>

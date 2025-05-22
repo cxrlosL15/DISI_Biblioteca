@@ -1,0 +1,28 @@
+﻿@page "{idPrestamo?}"
+@model BibliotecaRinconDelLibro.Pages.Returns.CrearDesdePrestamoModel
+@{
+    ViewData["Title"] = "Crear devolución desde préstamo";
+}
+
+<h1>Crear devolución desde préstamo</h1>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-info">@Model.Mensaje</div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="IdPrestamo"></label>
+        <input asp-for="IdPrestamo" class="form-control" type="number" required />
+        <span asp-validation-for="IdPrestamo" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar devolución</button>
+</form>
+
+<p><strong>ID ingresado:</strong> @Model.IdPrestamo</p>
+
+<partial name="_ValidationScriptsPartial" />
+
+<a asp-page="./Index" class="btn btn-secondary mt-3">Volver al listado de devoluciones</a>

@@ -1,0 +1,164 @@
+﻿@page
+@model GestionUsuariosModel
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+}
+
+<div class="admin-container page-container">
+    @* Usando page-container para un estilo consistente *@
+    <h2>@ViewData["Title"]</h2>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success">@Model.SuccessMessage</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @foreach (var modelStateKey in ViewData.ModelState.Keys.Where(k => ViewData.ModelState[k].Errors.Any()))
+            {
+                var modelStateVal = ViewData.ModelState[modelStateKey];
+                foreach (var error in modelStateVal.Errors)
+                {
+                    <span>@error.ErrorMessage</span>
+
+                    <br />
+                }
+            }
+        </div>
+    }
+
+
+    <h3>Crear Nuevo Usuario</h3>
+    <form method="post" asp-page-handler="CrearUsuario" class="user-creation-form">
+        @* <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div> *@
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="NuevoUsuario.Nombre"></label>
+                <input asp-for="NuevoUsuario.Nombre" class="form-control" />
+                <span asp-validation-for="NuevoUsuario.Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="NuevoUsuario.ApellidoP">Apellido Paterno</label>
+                <input asp-for="NuevoUsuario.ApellidoP" class="form-control" />
+                <span asp-validation-for="NuevoUsuario.ApellidoP" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="NuevoUsuario.ApellidoM">Apellido Materno (Opcional)</label>
+                <input asp-for="NuevoUsuario.ApellidoM" class="form-control" />
+                <span asp-validation-for="NuevoUsuario.ApellidoM" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="NuevoUsuario.Email">Correo Electrónico</label>
+                <input asp-for="NuevoUsuario.Email" class="form-control" />
+                <span asp-validation-for="NuevoUsuario.Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="NuevoUsuario.Password"></label>
+                <input asp-for="NuevoUsuario.Password" class="form-control" />
+                <span asp-validation-for="NuevoUsuario.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="NuevoUsuario.IdRol"></label>
+                <select asp-for="NuevoUsuario.IdRol" asp-items="Model.RolesDisponibles" class="form-control">
+                    <option value="">-- Seleccionar Rol --</option>
+                </select>
+                <span asp-validation-for="NuevoUsuario.IdRol" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Crear Usuario</button>
+    </form>
+
+    <hr class="my-4" />
+
+    <h3>Listado de Usuarios</h3>
+    @if (Model.Usuarios.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre Completo</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        @*<th>Acciones</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in Model.Usuarios)
+                    {
+                        <tr>
+                            <td>@usuario.UsuarioID</td>
+                            <td>@usuario.NombreCompleto</td>
+                            <td>@usuario.Email</td>
+                            <td>@usuario.TipoRol</td>
+                            @* <td>
+                                <button class="btn btn-sm btn-info">Editar</button>
+                                <button class="btn btn-sm btn-danger">Eliminar</button>
+                            </td> *@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>No hay usuarios registrados.</p>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -5px;
+        margin-left: -5px;
+    }
+
+    .form-group.col-md-6 {
+        position: relative;
+        width: 100%;
+        padding-right: 5px;
+        padding-left: 5px;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .mt-3 {
+        margin-top: 1rem !important;
+    }
+
+    .my-4 {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem !important;
+    }
+
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+</style>

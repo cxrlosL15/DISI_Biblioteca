@@ -1,0 +1,95 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Clientes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Lista de Clientes</h1>
+<form method="get" id="searchForm" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="SearchString" id="searchInput" value="@Model.SearchString" class="form-control" placeholder="Buscar clientes..." />
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+<p>
+    <a asp-page="Create">Añadir nuevo Cliente</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente[0].Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente[0].ApellidoP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente[0].ApellidoM)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente[0].Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente[0].Valoracion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente[0].IdDireccionNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Cliente) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApellidoP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApellidoM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valoracion)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.DireccionCompleta)
+            </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.IdClientes" class="btn btn-sm btn-primary me-1">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a asp-page="./Details" asp-route-id="@item.IdClientes" class="btn btn-sm btn-secondary me-1">
+                        <i class="fas fa-info-circle"></i> Detalles
+                    </a>
+                    <a asp-page="./Delete" asp-route-id="@item.IdClientes" class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('searchInput');
+
+            input.addEventListener('input', () => {
+                if (input.value.trim() === '') {
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.delete('SearchString');
+                    window.location.href = currentUrl.toString();
+                }
+            });
+
+            // Restaurar foco al input al cargar la página
+            input.focus();
+        });
+    </script>
+}

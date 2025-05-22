@@ -1,0 +1,84 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Clientes.EditModel
+
+@{
+    ViewData["Title"] = "Editar información del Cliente";
+}
+
+<h1>Editar datos del cliente</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Cliente.IdClientes" />
+            <div class="form-group">
+                <label asp-for="Cliente.Nombre" class="control-label"></label>
+                <input asp-for="Cliente.Nombre" class="form-control" />
+                <span asp-validation-for="Cliente.Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.ApellidoP" class="control-label"></label>
+                <input asp-for="Cliente.ApellidoP" class="form-control" />
+                <span asp-validation-for="Cliente.ApellidoP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.ApellidoM" class="control-label"></label>
+                <input asp-for="Cliente.ApellidoM" class="form-control" />
+                <span asp-validation-for="Cliente.ApellidoM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente.Correo" class="control-label"></label>
+                <input asp-for="Cliente.Correo" class="form-control" />
+                <span asp-validation-for="Cliente.Correo" class="text-danger"></span>
+            </div>
+
+            <h4>Dirección del Cliente</h4>
+
+            <div class="form-group">
+                <label asp-for="Direccion.Calle" class="control-label"></label>
+                <input asp-for="Direccion.Calle" class="form-control" />
+                <span asp-validation-for="Direccion.Calle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Direccion.Colonia" class="control-label"></label>
+                <input asp-for="Direccion.Colonia" class="form-control" />
+                <span asp-validation-for="Direccion.Colonia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Direccion.CodigoPostal" class="control-label"></label>
+                <input asp-for="Direccion.CodigoPostal" class="form-control" />
+                <span asp-validation-for="Direccion.CodigoPostal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Direccion.Ciudad" class="control-label"></label>
+                <input asp-for="Direccion.Ciudad" class="form-control" />
+                <span asp-validation-for="Direccion.Ciudad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Direccion.Estado" class="control-label"></label>
+                <input asp-for="Direccion.Estado" class="form-control" />
+                <span asp-validation-for="Direccion.Estado" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Cliente.Valoracion" class="control-label"></label>
+                <input asp-for="Cliente.Valoracion" class="form-control" />
+                <span asp-validation-for="Cliente.Valoracion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

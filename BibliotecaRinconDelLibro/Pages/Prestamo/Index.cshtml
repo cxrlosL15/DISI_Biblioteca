@@ -1,0 +1,68 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Prestamo.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Préstamos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>Fecha Préstamo</th>
+            <th>Cliente</th>
+            <th>Estado del Libro</th>
+            <th>Título del Libro</th>
+            <th>Fecha Devolución</th>
+            <th>Estado de Prestamo</th>
+            <th>Responsable</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Prestamo)
+        {
+            <tr>
+               
+                <td>@item.FechaPrestamo.ToString("d")</td>
+                <td>@item.IdClientesNavigation?.NombreCompleto</td>
+                <td>@item.IdEstadoLibroNavigation?.DescripcionEstado</td>
+                <td>@item.IdLibroNavigation?.Titulo</td>
+                <td>@item.FechaDevolucion.ToString("d")</td>
+                <td>@item.IdEstadoPrestamo.</td>
+                <td>@item.IdUsuarioNavigation?.NombreCompleto</td>
+                   <td>
+                    <a asp-page="./Edit" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Editar</a> |
+                    <a asp-page="./Details" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Ticket</a> |
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.IdPrestamo" style="display:inline;">
+                        <button type="submit" class="btn-eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este préstamo?')">Borrar</button>
+                    </form>
+
+                   </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div style="text-align: right; margin-top: 20px;">
+    <a class="boton-personalizado" asp-page="Create">Crear nuevo préstamo</a>
+</div>
+<style>
+    .btn-eliminar {
+        background-color: #E5E0CF;
+        color: #6F8249;
+        border: 1px solid #E5E0CF;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .btn-eliminar:hover {
+        background-color: #d4cbb6;
+    }
+</style>
+
+
