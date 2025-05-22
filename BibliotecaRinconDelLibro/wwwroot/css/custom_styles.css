@@ -353,3 +353,72 @@ header .navbar-toggler-icon {
         max-width: 50%;
     }
 }
+.main-content.login-page-content {
+    display: flex; /* Habilita Flexbox */
+    flex-direction: column; /* Apila los elementos hijos verticalmente (aunque solo habrá uno principal) */
+    justify-content: center; /* Centra el contenido verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+    min-height: calc(100vh - 80px); /* Altura mínima para ocupar la pantalla menos el header (ajusta 80px si tu header es más alto o más bajo) */
+    width: 100%;
+    padding: 20px; /* Un poco de espacio alrededor */
+    box-sizing: border-box;
+}
+
+/* El login-container (de Login.cshtml) será el hijo directo centrado por .main-content.login-page-content.
+   Ahora definimos cómo se ve este contenedor. */
+.login-container {
+    width: 100%; /* Ocupa el espacio que le da el centrado de su padre */
+    /* No necesita márgenes automáticos para centrarse, ya que su padre lo hace con flexbox */
+}
+
+/* El login-form-wrapper es la "tarjeta" visible del formulario */
+.login-form-wrapper {
+    background-color: #ffffff; /* Fondo blanco para la tarjeta del formulario */
+    padding: 45px 55px; /* Espaciado interno */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12); /* Sombra suave */
+    width: 100%; /* Ocupa el ancho de .login-container */
+    max-width: 550px; /* Ancho máximo del formulario */
+    margin: 0 auto; /* Centra el wrapper si login-container fuera más ancho */
+    border-top: 5px solid var(--color-coyote); /* Un acento de color usando tu variable CSS */
+}
+
+    .login-form-wrapper h2 {
+        font-family: var(--font-titulares, 'Playfair Display', serif); /* Usa tu fuente para titulares */
+        color: var(--color-coyote, #765E49); /* Usa tu color coyote */
+        text-align: center;
+        margin-bottom: 35px; /* Espacio debajo del título */
+        font-size: 2.3rem; /* Tamaño del título (ajusta según necesites) */
+        font-weight: 700;
+    }
+
+    /* Asegúrate de que los elementos del formulario también se vean bien */
+    /* En custom_styles.css */
+    .login-form-wrapper .form-group {
+        /* Aumenta este valor para más espacio vertical entre campos */
+        margin-bottom: 1.75rem; /* Originalmente 1.5rem */
+    }
+
+    .login-form-wrapper .form-control {
+        font-family: var(--font-cuerpo, 'Open Sans', sans-serif);
+        /* Aumenta el tamaño de la fuente dentro del input */
+        font-size: 1.1rem; /* Por ejemplo, si el base es 1rem */
+        /* Aumenta el padding para hacer el input más alto y con más espacio interno */
+        padding: 12px 18px; /* Originalmente podría ser 10px 15px */
+        border: 1px solid var(--color-bone, #E5E0CF);
+        background-color: var(--color-seasalt, #FAFAF8);
+        line-height: 1.5; /* Ajusta la altura de línea si es necesario con el nuevo tamaño de fuente */
+    }
+
+    /* En custom_styles.css */
+    .login-form-wrapper .btn-primary {
+        font-family: var(--font-subtitulares, 'Montserrat', sans-serif);
+        background-color: var(--color-coyote, #765E49);
+        color: var(--color-seasalt, #FAFAF8);
+        width: 100%;
+        /* Aumenta el tamaño de la fuente del botón */
+        font-size: 1.1rem; /* Por ejemplo */
+        /* Aumenta el padding para un botón más grande */
+        padding: 12px 20px; /* Ajusta según veas conveniente */
+        /* ... otros estilos de botón que ya tengas ... */
+    }
