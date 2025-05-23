@@ -122,6 +122,8 @@
                         showCancelButton: true,
                         confirmButtonText: 'Sí, eliminar',
                         cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#ff1100',   // color para confirmar
+                        cancelButtonColor: '#5e627d'  // color para cancelar
                     }).then((result) => {
                         if (result.isConfirmed) {
                             form.submit();               // solo si confirma, hacemos el POST

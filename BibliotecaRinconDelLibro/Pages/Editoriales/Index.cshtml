@@ -45,28 +45,29 @@
         {
             <tr>
                 <td>@item.Nombre</td>
-                <td class="text-right">
-                    <!-- Editar: abrimos modal y cargamos datos -->
-                    <button class="btn btn-sm btn-primary"
-                            data-id="@item.IdEditorial"
-                            data-nombre="@item.Nombre"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editModal">
-                        Editar
-                    </button>
-
-                    <!-- Borrar: interceptado por SweetAlert2 -->
-                    <form method="post"
-                          asp-page-handler="Delete"
-                          asp-route-id="@item.IdEditorial"
-                          class="d-inline delete-form">
+                    <td class="text-right">
+                        <!-- Editar: abrimos modal y cargamos datos -->
                         <button type="button"
-                                class="btn btn-sm btn-danger delete-btn"
-                                data-name="@item.Nombre">
-                            Eliminar
+                                class="btn btn-sm btn-primary me-1"
+                                data-id="@item.IdEditorial"
+                                data-nombre="@item.Nombre"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal">
+                            <i class="fas fa-edit"></i> Editar
                         </button>
-                    </form>
-                </td>
+
+                        <!-- Borrar: interceptado por SweetAlert2 -->
+                        <form method="post"
+                              asp-page-handler="Delete"
+                              asp-route-id="@item.IdEditorial"
+                              class="d-inline delete-form">
+                            <button type="button"
+                                    class="btn btn-sm btn-danger"
+                                    data-name="@item.Nombre">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
             </tr>
         }
     </tbody>

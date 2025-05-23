@@ -52,28 +52,31 @@
                 <td>@autor.Nombres</td>
                 <td>@autor.ApellidoP</td>
                 <td>@autor.ApellidoM</td>
-                <td class="text-right">
-                    <button type="button"
-                            class="btn btn-sm btn-primary me-1 edit-btn"
-                            data-id="@autor.IdAutores"
-                            data-nombres="@autor.Nombres"
-                            data-apellido-p="@autor.ApellidoP"
-                            data-apellido-m="@autor.ApellidoM"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editModal">
-                        Editar
-                    </button>
-                    <form method="post"
-                          asp-page-handler="Delete"
-                          asp-route-id="@autor.IdAutores"
-                          class="d-inline delete-form">
+                    <td class="text-right">
+                        <!-- Botón Editar con ícono -->
                         <button type="button"
-                                class="btn btn-sm btn-danger delete-btn"
-                                data-name="@($"{autor.Nombres} {autor.ApellidoP} {autor.ApellidoM}")">
-                            Eliminar
+                                class="btn btn-sm btn-primary me-1 edit-btn"
+                                data-id="@autor.IdAutores"
+                                data-nombres="@autor.Nombres"
+                                data-apellido-p="@autor.ApellidoP"
+                                data-apellido-m="@autor.ApellidoM"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal">
+                            <i class="fas fa-edit"></i> Editar
                         </button>
-                    </form>
-                </td>
+
+                        <!-- Formulario de eliminación con ícono -->
+                        <form method="post"
+                              asp-page-handler="Delete"
+                              asp-route-id="@autor.IdAutores"
+                              class="d-inline delete-form">
+                            <button type="button"
+                                    class="btn btn-sm btn-danger delete-btn"
+                                    data-name="@($"{autor.Nombres} {autor.ApellidoP} {autor.ApellidoM}")">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
             </tr>
         }
     </tbody>

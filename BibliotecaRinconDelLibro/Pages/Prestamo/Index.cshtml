@@ -23,6 +23,13 @@
 
 <h1>Préstamos</h1>
 
+<div class="d-flex justify-content-start mb-4">
+    <a asp-page="Create"
+           class="btn btn-success">
+            + Nuevo
+    </a>      
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -48,19 +55,24 @@
                 <td>@item.FechaDevolucion.ToString("d")</td>
                 <td>@ObtenerEstadoPrestamo(item.IdEstadoPrestamo)</td> <!-- Corregido -->
                 <td>@item.IdUsuarioNavigation?.NombreCompleto</td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Editar</a> |
-                    <a asp-page="./Details" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Ticket</a> 
-                </td>
+                    <td class="text-right">
+                        <a asp-page="./Edit"
+                           asp-route-id="@item.IdPrestamo"
+                           class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-page="./Details"
+                           asp-route-id="@item.IdPrestamo"
+                           class="btn btn-sm btn-secondary">
+                            <i class="fas fa-ticket-alt"></i> Ticket
+                        </a>
+                    </td
             </tr>
 
         }
     </tbody>
 </table>
 
-<div style="text-align: right; margin-top: 20px;">
-    <a class="boton-personalizado" asp-page="Create">Crear nuevo préstamo</a>
-</div>
 </div>
 
 <style>
