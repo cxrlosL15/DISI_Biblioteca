@@ -65,8 +65,8 @@ public partial class Cliente
     [InverseProperty("IdClientesNavigation")]
     public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
 
-    [Column("Eliminado")]
-    public int? Eliminado { get; set; }
+   /* [Column("Eliminado")]
+    public int? Eliminado { get; set; }*/
 
     [Column("EstadoCliente")]
     public int? EstadoCliente { get; set; } = 1;
