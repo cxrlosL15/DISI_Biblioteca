@@ -50,27 +50,30 @@
             <tr>
                 <td>@ubic.Pasillo</td>
                 <td>@ubic.Estante</td>
-                <td class="text-right">
-                    <button type="button"
-                            class="btn btn-sm btn-primary me-1 edit-btn"
-                            data-id="@ubic.IdUbicacion"
-                            data-pasillo="@ubic.Pasillo"
-                            data-estante="@ubic.Estante"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editModal">
-                        Editar
-                    </button>
-                    <form method="post"
-                          asp-page-handler="Delete"
-                          asp-route-id="@ubic.IdUbicacion"
-                          class="d-inline delete-form">
+                    <td class="text-right">
+                        <!-- Editar: abrimos modal y cargamos datos -->
                         <button type="button"
-                                class="btn btn-sm btn-danger delete-btn"
-                                data-name="@($"{ubic.Pasillo} / {ubic.Estante}")">
-                            Eliminar
+                                class="btn btn-sm btn-primary me-1 edit-btn"
+                                data-id="@ubic.IdUbicacion"
+                                data-pasillo="@ubic.Pasillo"
+                                data-estante="@ubic.Estante"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal">
+                            <i class="fas fa-edit"></i> Editar
                         </button>
-                    </form>
-                </td>
+
+                        <!-- Borrar: interceptado por SweetAlert2 -->
+                        <form method="post"
+                              asp-page-handler="Delete"
+                              asp-route-id="@ubic.IdUbicacion"
+                              class="d-inline delete-form">
+                            <button type="button"
+                                    class="btn btn-sm btn-danger delete-btn"
+                                    data-name="@($"{ubic.Pasillo} / {ubic.Estante}")">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
             </tr>
         }
     </tbody>
