@@ -422,3 +422,12 @@ header .navbar-toggler-icon {
         padding: 12px 20px; /* Ajusta según veas conveniente */
         /* ... otros estilos de botón que ya tengas ... */
     }
+
+
+/* Botón “Coyote” (color principal) */
+.btn-coyote {
+    background-color: var(--color-coyote);
+    border-color: var(--color-coyote);
+    color: var(--color-bone);
+}
+
