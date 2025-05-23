@@ -112,6 +112,6 @@ public partial class Libro
     [Column("BorradoLogico")]
     public bool BorradoLogico { get; set; } = false;
 
-    [Column("Eliminado")]
-    public int? Eliminado { get; set; }
+   /* [Column("Eliminado")]
+    public int? Eliminado { get; set; }*/
 }
