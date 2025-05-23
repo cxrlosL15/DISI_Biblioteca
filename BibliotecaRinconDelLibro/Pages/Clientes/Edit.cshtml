@@ -50,7 +50,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Direccion.CodigoPostal" class="control-label"></label>
-                <input asp-for="Direccion.CodigoPostal" class="form-control" />
+                <input asp-for="Direccion.CodigoPostal" id="valorCPInput" class="form-control" />
                 <span asp-validation-for="Direccion.CodigoPostal" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -85,4 +85,62 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        // --- Funciones genéricas de filtrado para entradas de númericas---
+        function attachIntegerFilter(el) {
+            if (!el) return;
+            el.addEventListener('keydown', e => {
+                const nav = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Home', 'End'];
+                if (nav.includes(e.key)) return;
+                if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+            });
+            el.addEventListener('input', e => {
+                const clean = e.target.value.replace(/\D/g, '');
+                if (clean !== e.target.value) e.target.value = clean;
+            });
+            el.addEventListener('paste', e => {
+                e.preventDefault();
+                const txt = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+                document.execCommand('insertText', false, txt);
+            });
+        }
+
+        function attachDecimalFilter(el) {
+            if (!el) return;
+            el.addEventListener('keydown', e => {
+                const nav = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', 'Home', 'End'];
+                if (nav.includes(e.key)) return;
+                if (e.key === '.') {
+                    if (el.value.includes('.')) e.preventDefault();
+                    return;
+                }
+                if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+            });
+            el.addEventListener('input', e => {
+                let txt = e.target.value.replace(/[^0-9.]/g, '');
+                const parts = txt.split('.');
+                if (parts.length > 2) txt = parts[0] + '.' + parts.slice(1).join('');
+                if (txt !== e.target.value) e.target.value = txt;
+            });
+            el.addEventListener('paste', e => {
+                e.preventDefault();
+                let txt = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9.]/g, '');
+                const parts = txt.split('.');
+                if (parts.length > 2) txt = parts[0] + '.' + parts.slice(1).join('');
+                document.execCommand('insertText', false, txt);
+            });
+        }
+
+        // --- Montaje sobre varios inputs ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // ids de campos integer-only
+            ['qtyInput', /* agrega aquí cualquier otro id de integer */]
+                .forEach(id => attachIntegerFilter(document.getElementById(id)));
+
+            // ids de campos decimal
+            ["valorCPInput", /* otros id de decimales */]
+                .forEach(id => attachDecimalFilter(document.getElementById(id)));
+        });
+    </script>
 }
