@@ -62,16 +62,28 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
             // Cambia el estado del préstamo a "Devuelto" 
             prestamo.IdEstadoPrestamo = "Devuelto";
 
+            //Nuevo
+            var libroId = prestamo.IdLibro; // Asegúrate que esta propiedad existe en el modelo Prestamo
+
+            // Buscar el registro de disponibilidad relacionado
+            var disponibilidad = await _context.Disponibilidads.FirstOrDefaultAsync(d => d.IdLibro == libroId);
+
+            if (disponibilidad != null)
+            {
+                disponibilidad.TotalDespuesPrestamos += 1; // Incrementar la cantidad disponible del libro
+            }
+            //hasta aca
+
             await _context.SaveChangesAsync();
 
             // Verifica si se pasó la fecha de devolución
             if (DateTime.Now.Date > prestamo.FechaDevolucion.Date)
             {
-                TempData["Mensaje"] = "Devolución registrada. El préstamo se devolvió tarde. Se debe generar una multa.";
+                TempData["Mensaje"] = "Devolucion registrada. El prestamo se devolvio tarde. Se debe generar una multa.";
             }
             else
             {
-                TempData["Mensaje"] = $"Devolución registrada correctamente para préstamo ID {IdPrestamo}.";
+                TempData["Mensaje"] = $"Devolucion registrada correctamente para prestamo ID {IdPrestamo}.";
             }
 
             return RedirectToPage("./CrearDesdePrestamo"); // o "../Index" si prefieres volver al listado
