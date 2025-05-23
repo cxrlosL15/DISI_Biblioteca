@@ -115,7 +115,7 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al guardar el libro.");
+                ModelState.AddModelError(string.Empty, $"Ocurrió un error al guardar el libro: {ex.Message}"); 
                 Console.WriteLine("Error al guardar: " + ex.Message);
 
                 // ⚠️ Si ya se subió la imagen y ocurrió error, puedes borrarla
