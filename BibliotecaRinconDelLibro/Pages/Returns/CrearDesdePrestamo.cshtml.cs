@@ -28,7 +28,7 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (IdPrestamo <= 0)
+             if (IdPrestamo <= 0)
             {
                 TempData["Mensaje"] = "Por favor, ingresa un ID de prestamo valido.";
                 return Page();
@@ -65,13 +65,13 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
             await _context.SaveChangesAsync();
 
             // Verifica si se pasó la fecha de devolución
-            if (prestamo.FechaDevolucion.HasValue && DateOnly.FromDateTime(DateTime.Now) > prestamo.FechaDevolucion.Value)
+            if (DateTime.Now.Date > prestamo.FechaDevolucion.Date)
             {
-                TempData["Mensaje"] = "Devolucion registrada. SE DEBE GENERAR UNA MULTA";
+                TempData["Mensaje"] = "Devolución registrada. El préstamo se devolvió tarde. Se debe generar una multa.";
             }
             else
             {
-                TempData["Mensaje"] = $"Devolucion registrada correctamente.";
+                TempData["Mensaje"] = $"Devolución registrada correctamente para préstamo ID {IdPrestamo}.";
             }
 
             return RedirectToPage("./CrearDesdePrestamo"); // o "../Index" si prefieres volver al listado
