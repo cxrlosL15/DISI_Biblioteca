@@ -122,15 +122,16 @@
         </div>
 
         <div class="d-flex align-items-center gap-3">
-            @if (!isLoginPage && User.Identity != null && User.Identity.IsAuthenticated)
+            @if (!isLoginPage && User.Identity?.IsAuthenticated == true)
             {
-                <span class="">
-                    Hola, @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? User.Identity.Name)!
-                </span>
-                <form method="post" asp-page="/Logout" class="d-inline" onsubmit="return confirm('¿Seguro que quieres cerrar sesión?');">
-                    @* Añadir AntiForgeryToken si no está globalmente configurado para todos los POST *@
-                    @* @Html.AntiForgeryToken() *@
-                    <button type="submit" class="btn btn-sm btn-danger mt-3">
+                <span>Hola, @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? User.Identity.Name)!</span>
+                <form method="post"
+                      asp-page="/Logout"
+                      class="d-inline"
+                      id="logoutForm">
+                    @Html.AntiForgeryToken()
+                    <button type="submit"
+                            class="btn btn-sm btn-danger mt-1">
                         <i class="bi bi-box-arrow-right"></i>
                     </button>
                 </form>
@@ -159,15 +160,43 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    @if (!isLoginPage) // Solo ejecutar scripts de menú si NO es la página de Login y los elementos existen
+    @if (!isLoginPage)
     {
-        
+        <!-- SweetAlert2 para logout -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var form = document.getElementById('logoutForm');
+                if (!form) return;
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();  // evita el envío inmediato
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: '¿Quieres cerrar sesión?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, cerrar sesión',
+                        cancelButtonText: 'Cancelar',
+                        customClass: {
+                            confirmButton: 'btn btn-danger me-2',
+                            cancelButton: 'btn btn-secondary'
+                        },
+                        buttonsStyling: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
     }
 </body>
 </html>

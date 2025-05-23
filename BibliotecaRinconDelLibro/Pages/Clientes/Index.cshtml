@@ -6,19 +6,32 @@
 }
 <div class="admin-container page-container">
 
-<h1>Lista de Clientes</h1>
-<form method="get" id="searchForm" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="SearchString" id="searchInput" value="@Model.SearchString" class="form-control" placeholder="Buscar clientes..." />
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </div>
-</form>
+<h1>Clientes</h1>
+
+<form method="get" class="d-flex align-items-center mb-3">
+        <input type="text"
+               name="SearchString"
+               id="searchInput"
+               value="@Model.SearchString"
+               class="form-control me-2"
+               placeholder="Buscar clientes..." />
+
+        <button type="submit" class="btn btn-primary me-2">
+            Buscar
+        </button>
+
+        <a asp-page="./Index" class="btn btn-secondary">
+            Limpiar
+        </a>
+</form>    
+
 <div class="d-flex justify-content-start mb-4">
     <a asp-page="Create"
        class="btn btn-success">
-        + Nuevo Cliente
+        + Nuevo
     </a>
 </div>
+
 <table class="table">
     <thead>
         <tr>
@@ -40,7 +53,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cliente[0].IdDireccionNavigation)
             </th>
-            <th></th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -71,9 +84,16 @@
                     <a asp-page="./Details" asp-route-id="@item.IdClientes" class="btn btn-sm btn-secondary me-1">
                         <i class="fas fa-info-circle"></i> Detalles
                     </a>
-                    <a asp-page="./Delete" asp-route-id="@item.IdClientes" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash-alt"></i> Eliminar
-                    </a>
+                    <form method="post"
+                              asp-page-handler="Eliminar"
+                              asp-route-id="@item.IdClientes"
+                              class="d-inline">
+                            <button type="submit"
+                                    class="btn btn-sm btn-danger delete-btn"
+                                    data-title="@item.Nombre  @item.ApellidoP @item.ApellidoM">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                    </form>
                 </td>
         </tr>
 }
@@ -82,6 +102,24 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["WarningDireccion"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'No se eliminó la dirección',
+                text: '@TempData["WarningDireccion"]',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#4f515e'
+            });
+        </script>
+    }
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const input = document.getElementById('searchInput');
@@ -96,6 +134,33 @@
 
             // Restaurar foco al input al cargar la página
             input.focus();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.delete-btn').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();                // evitamos el submit inmediato
+                    var form = btn.closest('form');    // el form que contiene este botón
+                    var title = btn.getAttribute('data-title') || 'este cliente';
+
+                    Swal.fire({
+                        title: '¿Eliminar?',
+                        text: '¿Seguro que quieres eliminar a "' + title + '"?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#e8291c',   // color para confirmar
+                        cancelButtonColor: '#4f515e'  // color para cancelar
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();               // solo si confirma, hacemos el POST
+                        }
+                    });
+                });
+            });
         });
     </script>
 }

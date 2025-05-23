@@ -40,5 +40,50 @@ namespace BibliotecaRinconDelLibro.Pages.Clientes
 
             Cliente = await query.ToListAsync();
         }
+
+        // Handler para SweetAlert2 desde el Index
+        public async Task<IActionResult> OnPostEliminarAsync(int id)
+        {
+            // 1) Cargo cliente + dirección
+            var cliente = await _context.Clientes
+                .Include(c => c.IdDireccionNavigation)
+                .FirstOrDefaultAsync(c => c.IdClientes == id);
+
+            if (cliente == null)
+                return NotFound();
+
+            var direccion = cliente.IdDireccionNavigation;
+            if (direccion != null)
+            {
+                // 2) Compruebo uso compartido
+                bool laUsaOtroCliente = await _context.Clientes
+                    .AnyAsync(c => c.IdDireccion == direccion.IdDireccion && c.IdClientes != id);
+                bool laUsaTicket = await _context.EncabezadoTickets
+                    .AnyAsync(t => t.IdDireccion == direccion.IdDireccion);
+
+                if (laUsaOtroCliente || laUsaTicket)
+                {
+                    // 3) Si está en uso, aviso y salgo SIN borrar nada
+                    TempData["WarningDireccion"] =
+                        "La direccion sigue en uso por otro cliente o por tickets y no se realizo ningun borrado.";
+                    return RedirectToPage();
+                }
+            }
+
+            // 4) Sólo llego aquí si la dirección NO está en uso (o es null)
+            //    Aplico el borrado lógico del cliente...
+            cliente.EstadoCliente = 0;
+            _context.Clientes.Update(cliente);
+
+            //    ...y elimino la dirección (porque sé que no hay referencias)
+            if (direccion != null)
+                _context.Direccions.Remove(direccion);
+
+            // 5) Guardo TODO en una única transacción implícita
+            await _context.SaveChangesAsync();
+            return RedirectToPage();
+        }
+
+
     }
 }
