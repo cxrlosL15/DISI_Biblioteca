@@ -71,7 +71,7 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // ✅ Guardar imagen ahora que todo es válido
+                // Guardar imagen
                 string carpeta = Path.Combine(_webHostEnvironment.WebRootPath, "ImagenLibro");
                 if (!Directory.Exists(carpeta))
                     Directory.CreateDirectory(carpeta);
@@ -82,22 +82,27 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
                 using (var stream = new FileStream(rutaFisica, FileMode.Create))
                 { await Imagen.CopyToAsync(stream); }
 
-                rutaRelativa = "/ImagenLibro/" + nombreArchivo;
+                 rutaRelativa = "/ImagenLibro/" + nombreArchivo;
                 var img = new ImgLibro { ImgLibros = rutaRelativa };
                 _context.ImgLibros.Add(img);
                 await _context.SaveChangesAsync();
                 Libro.IdImgLibros = img.IdImgLibros;
-                
 
-                // Guardar disponibilidad
-                _context.Disponibilidads.Add(NuevaDisponibilidad);
-                await _context.SaveChangesAsync();
-                Libro.IdDisponibilidad = NuevaDisponibilidad.IdDisponibilidad;
-
-                // Guardar libro
+                //  Guardar libro primero
                 _context.Libros.Add(Libro);
                 await _context.SaveChangesAsync();
 
+                // Crear disponibilidad después y asignar id del libro
+                NuevaDisponibilidad.IdLibro = Libro.IdLibro;
+                _context.Disponibilidads.Add(NuevaDisponibilidad);
+                await _context.SaveChangesAsync();
+
+                //  Vincular disponibilidad al libro
+                Libro.IdDisponibilidad = NuevaDisponibilidad.IdDisponibilidad;
+                _context.Update(Libro); // o _context.Entry(Libro).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                //  Guardar autores
                 foreach (var idAutor in AutoresSeleccionados)
                 {
                     var libroAutor = new LibroAutor
@@ -109,22 +114,27 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
                 }
                 await _context.SaveChangesAsync();
 
-
                 await transaction.CommitAsync();
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                ModelState.AddModelError(string.Empty, $"Ocurrió un error al guardar el libro: {ex.Message}"); 
-                Console.WriteLine("Error al guardar: " + ex.Message);
 
-                // ⚠️ Si ya se subió la imagen y ocurrió error, puedes borrarla
+                // Mostrar error completo si existe inner exception
+                var mensajeError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+
+                ModelState.AddModelError(string.Empty, $"Ocurrió un error al guardar el libro: {mensajeError}");
+
+               // Console.WriteLine("ERROR COMPLETO: " + ex.ToString());
+
+                // Borra imagen si ya fue subida
                 if (!string.IsNullOrEmpty(rutaRelativa))
                 {
                     string rutaFisica = Path.Combine(_webHostEnvironment.WebRootPath, rutaRelativa.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
                     if (System.IO.File.Exists(rutaFisica))
                         System.IO.File.Delete(rutaFisica);
                 }
+
                 CargarCombos();
                 return Page();
             }
