@@ -70,8 +70,19 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
 
             if (disponibilidad != null)
             {
-                disponibilidad.TotalDespuesPrestamos += 1; // Incrementar la cantidad disponible del libro
+                if (disponibilidad.CopiasPrestadas > 0)
+                    disponibilidad.CopiasPrestadas -= 1;
+
+                disponibilidad.TotalDespuesPrestamos = disponibilidad.TotalLibros - disponibilidad.CopiasPrestadas;
             }
+            if (disponibilidad != null && disponibilidad.CopiasPrestadas.HasValue && disponibilidad.TotalLibros.HasValue)
+            {
+                if (disponibilidad.CopiasPrestadas > 0)
+                    disponibilidad.CopiasPrestadas--;
+
+                disponibilidad.TotalDespuesPrestamos = disponibilidad.TotalLibros - disponibilidad.CopiasPrestadas;
+            }
+
             //hasta aca
 
             await _context.SaveChangesAsync();
