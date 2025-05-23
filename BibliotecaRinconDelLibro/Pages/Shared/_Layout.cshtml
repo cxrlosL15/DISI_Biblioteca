@@ -124,7 +124,7 @@
         <div class="d-flex align-items-center gap-3">
             @if (!isLoginPage && User.Identity?.IsAuthenticated == true)
             {
-                <span>Hola, @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? User.Identity.Name)!</span>
+                <span>Hola, @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? User.Identity.Name)☺️!</span>
                 <form method="post"
                       asp-page="/Logout"
                       class="d-inline"
