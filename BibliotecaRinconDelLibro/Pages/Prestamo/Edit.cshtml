@@ -15,7 +15,7 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Prestamo.IdPrestamo" />
+                <input type="hidden" asp-for="Prestamo.IdPrestamo" />
 
             <div class="form-group">
                 <label>Cliente</label>
@@ -25,13 +25,16 @@
 
             <div class="form-group">
                 <label>Libro</label>
-                <select asp-for="Prestamo.IdLibro" class="form-control" asp-items="@(ViewData["IdLibro"] as SelectList)"></select>
+                <!-- dropdown deshabilitado -->
+                <select asp-for="Prestamo.IdLibro" class="form-control" asp-items="@(ViewData["IdLibro"] as SelectList)" disabled></select>
+                <!-- para que siga llegando el Id al servidor -->
+                <input type="hidden" asp-for="Prestamo.IdLibro" />
                 <span asp-validation-for="Prestamo.IdLibro" class="text-danger"></span>
             </div>
       
             <div class="form-group">
                 <label>Fecha de prestamo</label>
-                <input asp-for="Prestamo.FechaPrestamo" class="form-control" type="date" />
+                <input asp-for="Prestamo.FechaPrestamo" class="form-control" type="date" readonly />
                 <span asp-validation-for="Prestamo.FechaPrestamo" class="text-danger"></span>
             </div>
 

@@ -10,17 +10,17 @@
 <form method="post">
     <input type="hidden" asp-for="Devolucion.IdDevoluciones" />
     <div class="form-group">
-        <label asp-for="Devolucion.IdPrestamo"></label>
-        <input asp-for="Devolucion.IdPrestamo" class="form-control" />
+        <label asp-for="Devolucion.IdPrestamo"># de Préstamo</label>
+        <input asp-for="Devolucion.IdPrestamo" class="form-control" readonly />
         <span asp-validation-for="Devolucion.IdPrestamo" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Devolucion.Motivo"></label>
-        <input asp-for="Devolucion.Motivo" class="form-control" />
-        <span asp-validation-for="Devolucion.Motivo" class="text-danger"></span>
+            <label asp-for="Devolucion.FechaDevolucion">Fecha de Devolución</label>
+        <input asp-for="Devolucion.FechaDevolucion" class="form-control" readonly />
+        <span asp-validation-for="Devolucion.FechaDevolucion" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Devolucion.IdEstadoRegreso" class="control-label"></label>
+        <label asp-for="Devolucion.IdEstadoRegreso" class="control-label">Estado de Regreso</label>
         <select asp-for="Devolucion.IdEstadoRegreso" class="form-control"
                 asp-items="Model.DescripcionEstado">
             <option value="">Seleccione una opción</option>
@@ -28,9 +28,9 @@
         <span asp-validation-for="Devolucion.IdEstadoRegreso" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Devolucion.FechaDevolucion"></label>
-        <input asp-for="Devolucion.FechaDevolucion" class="form-control" />
-        <span asp-validation-for="Devolucion.FechaDevolucion" class="text-danger"></span>
+        <label asp-for="Devolucion.Motivo">Motivo</label>
+        <input asp-for="Devolucion.Motivo" class="form-control" />
+        <span asp-validation-for="Devolucion.Motivo" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
     <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
