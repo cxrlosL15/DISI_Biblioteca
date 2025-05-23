@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BibliotecaRinconDelLibro.Models;
 
+
 public partial class Prestamo
 {
 
@@ -52,8 +53,8 @@ public partial class Prestamo
     public int? IdUsuario { get; set; }
 
   
-    [Column("id_Devoluciones")]
-    public int? IdDevoluciones { get; set; }
+   /* [Column("id_Devoluciones")]
+    public int? IdDevoluciones { get; set; }*/
 
     [InverseProperty("IdPrestamoNavigation")]
     public virtual ICollection<Devolucione> Devoluciones { get; set; } = new List<Devolucione>();
