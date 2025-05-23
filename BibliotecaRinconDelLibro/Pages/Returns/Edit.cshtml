@@ -4,8 +4,39 @@
     ViewData["Title"] = "Editar Devolución";
 }
 
+<div class="admin-container page-container">
+
 <h1>@ViewData["Title"]</h1>
 
+<form method="post">
+    <input type="hidden" asp-for="Devolucion.IdDevoluciones" />
+    <div class="form-group">
+        <label asp-for="Devolucion.IdPrestamo"></label>
+        <input asp-for="Devolucion.IdPrestamo" class="form-control" />
+        <span asp-validation-for="Devolucion.IdPrestamo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Devolucion.Motivo"></label>
+        <input asp-for="Devolucion.Motivo" class="form-control" />
+        <span asp-validation-for="Devolucion.Motivo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Devolucion.IdEstadoRegreso" class="control-label"></label>
+        <select asp-for="Devolucion.IdEstadoRegreso" class="form-control"
+                asp-items="Model.DescripcionEstado">
+            <option value="">Seleccione una opción</option>
+        </select>
+        <span asp-validation-for="Devolucion.IdEstadoRegreso" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Devolucion.FechaDevolucion"></label>
+        <input asp-for="Devolucion.FechaDevolucion" class="form-control" />
+        <span asp-validation-for="Devolucion.FechaDevolucion" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+</div>
 <style>
     body {
         background-color: #E5E0CF;
@@ -83,33 +114,3 @@
         font-family: 'Open Sans', sans-serif;
     }
 </style>
-
-
-<form method="post">
-    <input type="hidden" asp-for="Devolucion.IdDevoluciones" />
-    <div class="form-group">
-        <label asp-for="Devolucion.IdPrestamo"></label>
-        <input asp-for="Devolucion.IdPrestamo" class="form-control" />
-        <span asp-validation-for="Devolucion.IdPrestamo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Devolucion.Motivo"></label>
-        <input asp-for="Devolucion.Motivo" class="form-control" />
-        <span asp-validation-for="Devolucion.Motivo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Devolucion.IdEstadoRegreso" class="control-label"></label>
-        <select asp-for="Devolucion.IdEstadoRegreso" class="form-control"
-                asp-items="Model.DescripcionEstado">
-            <option value="">Seleccione una opción</option>
-        </select>
-        <span asp-validation-for="Devolucion.IdEstadoRegreso" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Devolucion.FechaDevolucion"></label>
-        <input asp-for="Devolucion.FechaDevolucion" class="form-control" />
-        <span asp-validation-for="Devolucion.FechaDevolucion" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
-</form>

@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Ticket de préstamo";
 }
+<div class="admin-container page-container">
 
 <div class="printable-area">
     @if (Model.EncabezadoTicket != null)
@@ -59,6 +60,7 @@
 
 <div>
     <button onclick="window.print()" class="btn btn-custom"> <i class="fas fa-print"></i> Imprimir Ticket </button>
+</div>
 </div>
 
 <style>

@@ -4,6 +4,8 @@
     ViewData["Title"] = "Crear devolución desde préstamo";
 }
 
+<div class="admin-container page-container">
+
 <h1>Crear devolución desde préstamo</h1>
 
 @if (!string.IsNullOrEmpty(Model.Mensaje))
@@ -26,3 +28,4 @@
 <partial name="_ValidationScriptsPartial" />
 
 <a asp-page="./Index" class="btn btn-secondary mt-3">Volver al listado de devoluciones</a>
+</div>

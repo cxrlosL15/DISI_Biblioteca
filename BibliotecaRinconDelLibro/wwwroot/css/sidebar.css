@@ -1,0 +1,58 @@
+﻿/* Variables (permanece global si las usas en otras partes) */
+:root {
+    --color-coyote: #765E49;
+    --color-bone: #E5E0CF;
+    --color-reseda-green: #6F8249;
+    --color-oxford-blue: #0B0F27;
+    --color-seasalt: #FAFAF8;
+    --font-titulares: 'Playfair Display', serif;
+    --font-subtitulares: 'Montserrat', sans-serif;
+    --font-cuerpo: 'Open Sans', sans-serif;
+}
+
+/* --- Scope exclusivo para el sidebar --- */
+#offcanvasSidebar {
+    /* ancho y fondo */
+    width: 250px;
+    background-color: var(--color-bone);
+    color: var(--color-oxford-blue);
+    /* tipografía base del sidebar */
+    font-family: var(--font-cuerpo);
+}
+
+    /* Header dentro del sidebar */
+    #offcanvasSidebar .offcanvas-header {
+        border-bottom: 1px solid var(--color-coyote);
+    }
+
+    /* Título principal */
+    #offcanvasSidebar .sidebar-title {
+        font-family: var(--font-titulares);
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: var(--color-coyote);
+    }
+
+    /* Subtítulos de sección */
+    #offcanvasSidebar .sidebar-subtitle {
+        font-family: var(--font-subtitulares);
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: var(--color-reseda-green);
+        margin: 1rem 0 0.5rem;
+    }
+
+    /* Enlaces del menú */
+    #offcanvasSidebar .sidebar-link {
+        display: block;
+        font-family: var(--font-cuerpo);
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        color: var(--color-oxford-blue);
+        text-decoration: none;
+    }
+
+        #offcanvasSidebar .sidebar-link:hover {
+            background-color: var(--color-seasalt);
+            color: var(--color-coyote);
+        }
