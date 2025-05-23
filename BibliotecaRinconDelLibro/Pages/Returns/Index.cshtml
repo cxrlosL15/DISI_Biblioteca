@@ -22,7 +22,6 @@
         </a>
     </div>
 
-
     @if (Model.DevolucionList != null && Model.DevolucionList.Any())
     {
         <div class="table-responsive">
@@ -43,14 +42,16 @@
                     {
                         <tr>
                             <td>
-                                @item.IdPrestamoNavigation?.IdClientesNavigation?.Nombre
-                                @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoP
-                                @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoM
+                                @(item.IdPrestamoNavigation?.IdClientesNavigation != null
+                                    ? item.IdPrestamoNavigation.IdClientesNavigation.Nombre + " " +
+                                    item.IdPrestamoNavigation.IdClientesNavigation.ApellidoP + " " +
+                                    item.IdPrestamoNavigation.IdClientesNavigation.ApellidoM
+                                    : "Cliente no disponible")
                             </td>
                             <td>@item.IdPrestamo</td>
-                            <td>@item.Motivo</td>
-                            <td>@item.IdEstadoRegresoNavigation?.DescripcionEstado</td>
-                            <td>@item.IdPrestamoNavigation.FechaPrestamo.ToShortDateString()</td>
+                            <td>@(string.IsNullOrEmpty(item.Motivo) ? "Sin motivo" : item.Motivo)</td>
+                            <td>@(item.IdEstadoRegresoNavigation?.DescripcionEstado ?? "Sin estado")</td>
+                            <td>@(item.IdPrestamoNavigation?.FechaPrestamo.ToShortDateString() ?? "Sin fecha")</td>
                             <td>@item.FechaDevolucion.ToShortDateString()</td>
                             <td>
                                 <a asp-page="./Edit" asp-route-id="@item.IdDevoluciones" class="btn btn-sm btn-primary me-1">
