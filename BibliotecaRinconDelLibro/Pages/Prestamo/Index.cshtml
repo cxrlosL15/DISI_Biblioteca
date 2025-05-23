@@ -41,7 +41,7 @@
             <th>Fecha Devolución</th>
             <th>Estado de Prestamo</th>
             <th>Responsable</th>
-            <th></th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -55,7 +55,7 @@
                 <td>@item.FechaDevolucion.ToString("d")</td>
                 <td>@ObtenerEstadoPrestamo(item.IdEstadoPrestamo)</td> <!-- Corregido -->
                 <td>@item.IdUsuarioNavigation?.NombreCompleto</td>
-                    <td class="text-right">
+                <td class="text-right">
                         <a asp-page="./Edit"
                            asp-route-id="@item.IdPrestamo"
                            class="btn btn-sm btn-primary me-1">
@@ -66,7 +66,7 @@
                            class="btn btn-sm btn-secondary">
                             <i class="fas fa-ticket-alt"></i> Ticket
                         </a>
-                    </td
+                </td>
             </tr>
 
         }

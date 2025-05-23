@@ -159,7 +159,9 @@
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#e8291c',   // color para confirmar
+                    cancelButtonColor: '#4f515e'  // color para cancelar
                 }).then(result => {
                     if (result.isConfirmed) form.submit();
                 });
