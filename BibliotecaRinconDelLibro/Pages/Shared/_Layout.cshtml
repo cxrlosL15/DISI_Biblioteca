@@ -38,19 +38,40 @@
         <div class="offcanvas-body">
             <nav class="nav flex-column">
                 <div class="sidebar-subtitle">Libros</div>
-                <a class="sidebar-link" asp-page="/Libros/Index">Ver libros</a>
-                <a class="sidebar-link" asp-page="/Autores/Index">Autores</a>
-                <a class="sidebar-link" asp-page="/Editoriales/Index">Editorial</a>
-                <a class="sidebar-link" asp-page="/Ubicaciones/Index">Ubicaciones</a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Libros/Index">
+                    <i class="bi bi-book me-2"></i>
+                    Ver libros
+                </a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Autores/Index">
+                    <i class="bi bi-person me-2"></i>
+                    Autores
+                </a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Editoriales/Index">
+                    <i class="bi bi-journal-text me-2"></i>
+                    Editorial
+                </a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Ubicaciones/Index">
+                    <i class="bi bi-geo-alt me-2"></i>
+                    Ubicaciones
+                </a>
 
                 <div class="sidebar-subtitle mt-4">Préstamos</div>
-                <a class="sidebar-link" asp-page="/Prestamo/Index">Préstamos</a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Prestamo/Index">
+                    <i class="bi bi-clock-history me-2"></i>
+                    Préstamos
+                </a>
 
                 <div class="sidebar-subtitle mt-4">Clientes</div>
-                <a class="sidebar-link" asp-page="/Clientes/Index">Clientes</a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Clientes/Index">
+                    <i class="bi bi-people me-2"></i>
+                    Clientes
+                </a>
 
                 <div class="sidebar-subtitle mt-4">Reportes</div>
-                <a class="sidebar-link" asp-page="/Reporte/Generar">Reportes</a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Reporte/Generar">
+                    <i class="bi bi-bar-chart-line me-2"></i>
+                    Reportes
+                </a>
             </nav>
         </div>
     </div>
