@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace BibliotecaRinconDelLibro.Models;
 
 public partial class Prestamo
 {
+
     [Key]
     [Column("id_prestamo")]
     public int IdPrestamo { get; set; }
@@ -32,6 +34,16 @@ public partial class Prestamo
     [Column("fecha_devolucion")]
     [DataType(DataType.Date)]
     public DateTime FechaDevolucion { get; set; } = DateTime.Now.AddDays(7);
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (FechaDevolucion < FechaPrestamo)
+        {
+            yield return new ValidationResult(
+                "La fecha de devolución no puede ser anterior a la fecha de préstamo.",
+                new[] { nameof(FechaDevolucion) });
+        }
+    }
 
     [Column("id_Estado_Libro")]
     public int? IdEstadoLibro { get; set; }

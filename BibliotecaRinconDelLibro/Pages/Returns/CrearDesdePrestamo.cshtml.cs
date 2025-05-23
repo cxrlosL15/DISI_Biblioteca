@@ -90,11 +90,11 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
             // Verifica si se pasó la fecha de devolución
             if (DateTime.Now.Date > prestamo.FechaDevolucion.Date)
             {
-                TempData["Mensaje"] = "Devolucion registrada. El prestamo se devolvio tarde. Se debe generar una multa.";
+                TempData["Mensaje"] = " Devolucion registrada. El prestamo se devolvio tarde. Se debe generar una multa.";
             }
             else
             {
-                TempData["Mensaje"] = $"Devolucion registrada correctamente para prestamo ID {IdPrestamo}.";
+                TempData["Mensaje"] = $" Devolucion registrada correctamente para prestamo ID {IdPrestamo}.";
             }
 
             return RedirectToPage("./CrearDesdePrestamo"); // o "../Index" si prefieres volver al listado

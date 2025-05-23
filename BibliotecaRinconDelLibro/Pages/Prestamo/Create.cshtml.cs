@@ -45,6 +45,14 @@ namespace BibliotecaRinconDelLibro.Pages.Prestamo
                 return Page();
             }
 
+            // ✅ Validación de fechas: solo se muestra en el campo específico
+            if (Prestamo.FechaDevolucion < Prestamo.FechaPrestamo)
+            {
+                ModelState.AddModelError("Prestamo.FechaDevolucion", "La fecha de devolución no puede ser anterior a la fecha de préstamo.");
+                await CargarListasAsync();
+                return Page();
+            }
+
             var disponibilidad = await _context.Disponibilidads
                 .FirstOrDefaultAsync(d => d.IdLibro == Prestamo.IdLibro);
 
@@ -57,7 +65,6 @@ namespace BibliotecaRinconDelLibro.Pages.Prestamo
 
             int disponibles = disponibilidad.TotalDespuesPrestamos ?? 0;
             if (disponibles <= 0)
-
             {
                 ModelState.AddModelError(string.Empty, "No hay ejemplares disponibles para prestar.");
                 await CargarListasAsync();
