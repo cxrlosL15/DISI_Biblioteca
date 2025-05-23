@@ -64,7 +64,7 @@ public partial class BibliotecaContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=Elise\\MSSQLSERVER02;Database=BibliotecaRinconDelLibro;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=BibliotecaRinconDelLibro;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -236,7 +236,7 @@ public partial class BibliotecaContext : DbContext
 
         modelBuilder.Entity<TipoMultum>(entity =>
         {
-            entity.HasKey(e => e.IdTipoMulta).HasName("PK__TipoMult__A33A05C5DA4D2EFB");
+            entity.HasKey(e => e.IdTipomulta).HasName("PK__TipoMult__A33A05C5DA4D2EFB");
         });
 
         modelBuilder.Entity<Ubicacione>(entity =>

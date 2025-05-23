@@ -10,7 +10,7 @@ public partial class TipoMultum
 {
     [Key]
     [Column("idTipoMulta")]
-    public int IdTipoMulta { get; set; }
+    public int IdTipomulta { get; set; }
 
     [StringLength(255)]
     [Unicode(false)]
@@ -19,10 +19,10 @@ public partial class TipoMultum
     [Column("Descripcion_Multa")]
     [StringLength(255)]
     [Unicode(false)]
-    public string? DescripcionMulta { get; set; }
+    public string? Descripcion { get; set; }
 
     [Column("Precio_Multa")]
-    public double? PrecioMulta { get; set; }
+    public double? MontoBase { get; set; }
 
     [InverseProperty("IdTipomultaNavigation")]
     public virtual ICollection<Multa> Multa { get; set; } = new List<Multa>();

@@ -26,7 +26,7 @@ public partial class Multa
     [Unicode(false)]
     public string? Descripcion { get; set; }
 
-    public bool? Pagado { get; set; }
+    public bool Pagado { get; set; }= false;
 
     [ForeignKey("IdPrestamo")]
     [InverseProperty("Multa")]
@@ -35,4 +35,8 @@ public partial class Multa
     [ForeignKey("IdTipomulta")]
     [InverseProperty("Multa")]
     public virtual TipoMultum? IdTipomultaNavigation { get; set; }
+
+
+    [InverseProperty("IdMultaNavigation")]
+    public virtual ICollection<TicketMultum> TicketMulta { get; set; } = new List<TicketMultum>();
 }

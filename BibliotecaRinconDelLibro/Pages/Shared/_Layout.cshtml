@@ -80,8 +80,17 @@
                 <a class="sidebar-link d-flex align-items-center" asp-page="/Clientes/Index">
                     <i class="bi bi-people me-2"></i>
                     Clientes
-                </a>
 
+                </a>
+                <div class="sidebar-subtitle mt-4">Multas</div>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/Multas/Index">
+                    <i class="bi bi-people me-2"></i>
+                    Multas
+                </a>
+                <a class="sidebar-link d-flex align-items-center" asp-page="/TiposMulta/Index">
+                    <i class="bi bi-person me-2"></i>
+                    TiposMulta
+                </a>
                 <div class="sidebar-subtitle mt-4">Reportes</div>
                 <a class="sidebar-link d-flex align-items-center" asp-page="/Reporte/Generar">
                     <i class="bi bi-bar-chart-line me-2"></i>
@@ -124,7 +133,7 @@
         <div class="d-flex align-items-center gap-3">
             @if (!isLoginPage && User.Identity?.IsAuthenticated == true)
             {
-                <span>Hola, @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? User.Identity.Name)!</span>
+                <span>Hola, @(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? User.Identity.Name)☺️!</span>
                 <form method="post"
                       asp-page="/Logout"
                       class="d-inline"

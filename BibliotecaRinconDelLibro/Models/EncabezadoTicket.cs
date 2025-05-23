@@ -24,7 +24,7 @@ public partial class EncabezadoTicket
     [Column("id_direccion")]
     public int? IdDireccion { get; set; }
 
-    public DateOnly? Fecha { get; set; }
+    public DateTime Fecha { get; set; } = DateTime.Now;
 
     [Column("id_Usuario")]
     public int? IdUsuario { get; set; }

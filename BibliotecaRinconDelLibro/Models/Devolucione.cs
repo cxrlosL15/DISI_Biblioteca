@@ -22,6 +22,7 @@ public partial class Devolucione
     [Unicode(false)]
     public string? Motivo { get; set; }
 
+    [Required(ErrorMessage = "Debe seleccionar un estado de regreso.")]
     [Column("id_EstadoRegreso")]
     public int? IdEstadoRegreso { get; set; }
 
