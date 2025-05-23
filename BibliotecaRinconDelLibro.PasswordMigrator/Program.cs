@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BibliotecaRinconDelLibro.PasswordMigrator
 {
     internal class Program
-    {
+    {//Hola vlads
         // --- CONFIGURACIÓN ---
         // ¡¡¡REEMPLAZA CON TU CADENA DE CONEXIÓN REAL!!!
         // Usa la cadena de conexión con Autenticación de Windows si así es como te conectas.
