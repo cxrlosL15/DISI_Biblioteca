@@ -1,13 +1,102 @@
-﻿@page
+﻿
+@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
-<div class="admin-container page-container">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* --- Doble fondo --- */
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    body {
+        background-color: #765E49; /* Fondo base */
+        font-family: 'Open Sans', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /* Panel superior donde vive todo el contenido */
+    .contenido {
+        background-color: #FAFAF8; /* Fondo superior */
+        width: 100%;
+        max-width: 1600px;
+        flex: 1;
+        min-height: 100vh;
+        box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+
+    /* --- Estilos del catálogo --- */
+    .titulo-principal {
+        font-family: 'Montserrat', sans-serif;
+        color: #765E49;
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .libro-card {
+        background-color: #FFFFFF;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .libro-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+        }
+
+            .libro-card:hover .libro-imagen {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+    .libro-imagen {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .libro-info {
+        color: #6F8249;
+    }
+</style>
+
+<div class="contenido">
+    <h1 class="titulo-principal">Bienvenido a El Rincón de los Libros</h1>
+
+    <div class="container">
+        <div class="row">
+            @foreach (var libro in Model.Libros)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="libro-card">
+                        <img src="@libro.IdImgLibrosNavigation?.ImgLibros" alt="@libro.Titulo" class="libro-imagen" />
+                        <h5 class="titulo-principal" style="font-size:1.2rem;">@libro.Titulo</h5>
+                        <div class="libro-info">
+                            <p><strong>Disponibilidad:</strong> @libro.IdDisponibilidadNavigation?.TotalLibros</p>
+                            <p><strong>Fecha de impresión:</strong> @libro.FechaDeImpresion?.ToShortDateString()</p>
+                            <p><strong>Género:</strong> @libro.IdGenerosNavigation?.Generos</p>
+                            <p><strong>Categoría:</strong> @libro.IdCategoriasNavigation?.Categoria1</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
-</div>
