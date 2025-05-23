@@ -24,7 +24,13 @@
 </head>
 <body onload="window.print()">
     <div class="ticket">
-        <h2>Biblioteca - Ticket de Multa</h2>
+        
+        <<h2>@Model.EncabezadoTicket.NombreBiblioteca</h2>
+        <p><strong>Teléfono:</strong> @Model.EncabezadoTicket.NumeroTelefono</p>
+        <p><strong>Dirección:</strong> @Model.EncabezadoTicket.IdDireccionNavigation?.Calle</p>
+        <p><strong>Fecha del Ticket:</strong> @Model.EncabezadoTicket.Fecha.ToString("dd/MM/yyyy")</p>
+        <hr />
+        <h3>Ticket de Multa</h3>
         <p><strong>Cliente:</strong> @Model.Multa.IdPrestamoNavigation?.IdClientesNavigation?.NombreCompleto</p>
         <p><strong>Tipo de Multa:</strong> @Model.Multa.IdTipomultaNavigation?.Descripcion</p>
         <p><strong>Monto:</strong> $@Model.Multa.Monto</p>

@@ -35,4 +35,8 @@ public partial class Multa
     [ForeignKey("IdTipomulta")]
     [InverseProperty("Multa")]
     public virtual TipoMultum? IdTipomultaNavigation { get; set; }
+
+
+    [InverseProperty("IdMultaNavigation")]
+    public virtual ICollection<TicketMultum> TicketMulta { get; set; } = new List<TicketMultum>();
 }
