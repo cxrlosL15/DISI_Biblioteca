@@ -23,9 +23,10 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
         public async Task OnGetAsync()
         {
             DevolucionList = await _context.Devoluciones
-                .Include(d => d.IdPrestamoNavigation)
-                .Include(d => d.IdEstadoRegresoNavigation)// <-- Esta es la propiedad correcta
-                .ToListAsync();
+                 .Include(d => d.IdPrestamoNavigation)
+                 .ThenInclude(p => p.IdClientesNavigation)
+                 .Include(d => d.IdEstadoRegresoNavigation)// <-- Esta es la propiedad correcta
+                 .ToListAsync();
         }
     }
 }

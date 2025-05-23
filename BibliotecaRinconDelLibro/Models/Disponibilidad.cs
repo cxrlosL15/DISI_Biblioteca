@@ -12,9 +12,10 @@ public partial class Disponibilidad
     [Required(ErrorMessage = "La disponibilidad es obligatoria")]
     [Key]
     [Column("id_Disponibilidad")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // ← Esto dice que SQL lo genera
     public int IdDisponibilidad { get; set; }
 
-    
+
     [Column("id_Libro")]
     public int? IdLibro { get; set; }
     

@@ -65,7 +65,6 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
                 return Page();
             }
 
-            // Declarar rutaRelativa fuera del try
             string rutaRelativa = string.Empty;
 
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -80,29 +79,34 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
                 string rutaFisica = Path.Combine(carpeta, nombreArchivo);
 
                 using (var stream = new FileStream(rutaFisica, FileMode.Create))
-                { await Imagen.CopyToAsync(stream); }
+                {
+                    await Imagen.CopyToAsync(stream);
+                }
 
-                 rutaRelativa = "/ImagenLibro/" + nombreArchivo;
+                rutaRelativa = "/ImagenLibro/" + nombreArchivo;
                 var img = new ImgLibro { ImgLibros = rutaRelativa };
                 _context.ImgLibros.Add(img);
                 await _context.SaveChangesAsync();
                 Libro.IdImgLibros = img.IdImgLibros;
 
-                //  Guardar libro primero
+                // Guardar libro primero
                 _context.Libros.Add(Libro);
                 await _context.SaveChangesAsync();
 
-                // Crear disponibilidad después y asignar id del libro
+                // Inicializar y guardar disponibilidad una sola vez
                 NuevaDisponibilidad.IdLibro = Libro.IdLibro;
+                NuevaDisponibilidad.CopiasPrestadas = 0;
+                NuevaDisponibilidad.TotalDespuesPrestamos = NuevaDisponibilidad.TotalLibros;
+
                 _context.Disponibilidads.Add(NuevaDisponibilidad);
                 await _context.SaveChangesAsync();
 
-                //  Vincular disponibilidad al libro
+                // Vincular disponibilidad al libro
                 Libro.IdDisponibilidad = NuevaDisponibilidad.IdDisponibilidad;
-                _context.Update(Libro); // o _context.Entry(Libro).State = EntityState.Modified;
+                _context.Update(Libro);
                 await _context.SaveChangesAsync();
 
-                //  Guardar autores
+                // Guardar autores
                 foreach (var idAutor in AutoresSeleccionados)
                 {
                     var libroAutor = new LibroAutor
@@ -120,14 +124,9 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
             {
                 await transaction.RollbackAsync();
 
-                // Mostrar error completo si existe inner exception
                 var mensajeError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-
                 ModelState.AddModelError(string.Empty, $"Ocurrió un error al guardar el libro: {mensajeError}");
 
-               // Console.WriteLine("ERROR COMPLETO: " + ex.ToString());
-
-                // Borra imagen si ya fue subida
                 if (!string.IsNullOrEmpty(rutaRelativa))
                 {
                     string rutaFisica = Path.Combine(_webHostEnvironment.WebRootPath, rutaRelativa.TrimStart('/').Replace("/", Path.DirectorySeparatorChar.ToString()));
@@ -138,6 +137,7 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
                 CargarCombos();
                 return Page();
             }
+
             return RedirectToPage("./Index");
         }
 

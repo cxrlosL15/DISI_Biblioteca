@@ -76,7 +76,7 @@ public class ReportesModel : PageModel
     {
         var secciones = SeccionesSeleccionadas?.Split(',') ?? Array.Empty<string>();
 
-        var logoBytes = System.IO.File.ReadAllBytes("C:\\Users\\Admin\\Downloads\\Trabajos y tareas\\Semestre 6\\Desarrollo e Implementación de Sistemas de Información\\BibliotecaRinconDelLibro\\Logos\\Images\\name.png");
+        var logoBytes = System.IO.File.ReadAllBytes("C:\\Logos\\name.png");
 
         var documento = Document.Create(container =>
         {
@@ -88,7 +88,7 @@ public class ReportesModel : PageModel
 
                 page.Header().Row(row =>
                 {
-                    row.ConstantItem(80).Image("C:\\Users\\Admin\\Downloads\\Trabajos y tareas\\Semestre 6\\Desarrollo e Implementación de Sistemas de Información\\BibliotecaRinconDelLibro\\Logos\\Images\\logo.png"); // Ruta local o webroot
+                    row.ConstantItem(80).Image("C:\\Logos\\logo.png"); // Ruta local o webroot
 
                     row.RelativeItem().AlignMiddle().Text("         REPORTE DE BIBLIOTECA")
                         .FontFamily("Montserrat")
