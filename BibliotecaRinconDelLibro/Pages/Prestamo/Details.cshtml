@@ -46,8 +46,15 @@
     </div>
 
     <div class="no-print">
-        <a asp-page="./Edit" asp-route-id="@Model.Prestamo.IdPrestamo">Editar</a> |
-        <a asp-page="./Index">Volver a la lista</a>
+        <a asp-page="./Edit"
+           asp-route-id="@Model.Prestamo.IdPrestamo"
+           class="btn btn-sm btn-primary me-1">
+            <i class="fas fa-edit"></i> Editar
+        </a>
+        <a asp-page="./Index"
+           class="btn btn-sm btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver a la lista
+        </a>
     </div>
 
     <div class="no-print">
