@@ -74,10 +74,14 @@
     .libro-info {
         color: #6F8249;
     }
+
+    .container {
+        margin-top: 80px; /* Ajusta este valor según la altura de tu encabezado */
+    }
 </style>
 
 <div class="contenido">
-    <h1 class="titulo-principal">Bienvenido a El Rincón de los Libros</h1>
+    
 
     <div class="container">
         <div class="row">
@@ -99,4 +103,19 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('mainHeader');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.body.style.paddingTop = `${headerHeight}px`;
+            }
+        });
+    </script>
+
+}
 
