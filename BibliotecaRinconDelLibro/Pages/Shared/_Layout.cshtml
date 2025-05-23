@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" href="~/Images/logo.png" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/custom_styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/MenuHorizontal.css" asp-append-version="true" />
@@ -27,7 +28,11 @@
         <div class="d-flex align-items-center">
             @if (!isLoginPage) // Solo mostrar el botón del sidebar si NO es la página de Login
             {
-                <button id="toggleSidebarBtn" class="btn btn-outline-secondary me-3">
+                <button class="btn btn-outline-secondary me-3"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasSidebar"
+                        aria-controls="offcanvasSidebar">
                     <i class="bi bi-list"></i>
                 </button>
             }
@@ -66,6 +71,23 @@
             }
         </div>
     </header>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar"
+         aria-labelledby="offcanvasSidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menú</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <nav class="nav flex-column">
+                <a class="nav-link px-3 py-2" asp-page="/Index">Inicio</a>
+                <a class="nav-link px-3 py-2" asp-page="/Libros/Index">Libros</a>
+                <a class="nav-link px-3 py-2" asp-page="/Autores/Index">Autores</a>
+                <!-- añade más enlaces según tu proyecto -->
+            </nav>
+        </div>
+    </div>
+
 
     <div class="layout">
         @if (!isLoginPage) // Solo mostrar el menú lateral si NO es la página de Login
@@ -90,5 +112,6 @@
     {
         
     }
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
