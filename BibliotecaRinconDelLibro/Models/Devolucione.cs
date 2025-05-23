@@ -9,8 +9,10 @@ namespace BibliotecaRinconDelLibro.Models;
 public partial class Devolucione
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id_devoluciones")]
     public int IdDevoluciones { get; set; }
+
 
     [Column("id_prestamo")]
     public int? IdPrestamo { get; set; }
