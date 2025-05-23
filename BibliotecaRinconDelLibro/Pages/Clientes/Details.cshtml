@@ -100,8 +100,15 @@ else
     <p class="text-muted">Este cliente no tiene préstamos registrados.</p>
 }
 
-<hr />
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Cliente.IdClientes">Editar</a> |
-    <a asp-page="./Index">Regresar</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center gap-2">
+        <a asp-page="./Edit" asp-route-id="@Model.Cliente.IdClientes" class="btn btn-info">
+            <i class="bi bi-pencil-square"></i> Editar
+        </a>
+        <span class="mx-1 text-muted">|</span>
+        <a asp-page="./Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
+    </div>
 </div>
+
