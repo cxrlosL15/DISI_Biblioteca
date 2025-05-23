@@ -13,7 +13,7 @@ namespace BibliotecaRinconDelLibro.PasswordMigrator
         // --- CONFIGURACIÓN ---
         // ¡¡¡REEMPLAZA CON TU CADENA DE CONEXIÓN REAL!!!
         // Usa la cadena de conexión con Autenticación de Windows si así es como te conectas.
-        private const string ConnectionString = "Server=localhost;Database=BibliotecaRinconDelLibro;Trusted_Connection=True;TrustServerCertificate=True;";
+        private const string ConnectionString = "Server=ELISE\\MSSQLSERVER02;Database=BibliotecaRinconDelLibro;Trusted_Connection=True;TrustServerCertificate=True;";
         // O si usas usuario y contraseña SQL:
         // private const string ConnectionString = "Server=tu_servidor_sql;Database=BibliotecaRinconDelLibro;User ID=tu_usuario;Password=tu_contraseña;TrustServerCertificate=True;";
         public static async Task Main(string[] args)

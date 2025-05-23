@@ -1,8 +1,17 @@
-﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures // Necesario para ViewContext si no está en _ViewImports.cshtml
-@using System.Security.Claims // Necesario para ClaimTypes
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using System.Security.Claims
 
 <!DOCTYPE html>
 <html lang="en">
+
+<style>
+    @@media print {
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,10 +94,11 @@
     @{
         // Determinar si la página actual es la de Login. Esto debe ir ANTES de usar isLoginPage.
         var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+
         var isLoginPage = !string.IsNullOrEmpty(currentPage) && currentPage.Equals("/Login", StringComparison.OrdinalIgnoreCase);
     }
 
-    <header class="border-bottom bg-white shadow-sm px-3 py-2 d-flex align-items-center justify-content-between header">
+    <header class="border-bottom bg-white shadow-sm px-3 py-2 d-flex align-items-center justify-content-between header no-print">
         <div class="d-flex align-items-center">
             @if (!isLoginPage) // Solo mostrar el botón del sidebar si NO es la página de Login
             {

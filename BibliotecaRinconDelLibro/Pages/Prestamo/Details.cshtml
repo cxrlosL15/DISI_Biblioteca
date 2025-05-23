@@ -4,63 +4,58 @@
 @{
     ViewData["Title"] = "Ticket de préstamo";
 }
+
 <div class="admin-container page-container">
 
-<div class="printable-area">
-    @if (Model.EncabezadoTicket != null)
-    {
-                        <div class="mb-4">
-                            <h1>@Model.EncabezadoTicket.NombreBiblioteca</h1>
-                            <p><strong>Teléfono:</strong> @Model.EncabezadoTicket.NumeroTelefono</p>
-                            <p><strong>Dirección:</strong> @Model.EncabezadoTicket.IdDireccionNavigation?.Calle </p>
-                            <p><strong>Fecha del Ticket:</strong> @Model.Prestamo.FechaPrestamo.ToString("dd/MM/yyyy")</p>
-                            <hr />
-                        </div>
-    }   
+    <div class="printable-area">
+        @if (Model.EncabezadoTicket != null)
+        {
+            <div class="mb-4">
+                <h1>@Model.EncabezadoTicket.NombreBiblioteca</h1>
+                <p><strong>Teléfono:</strong> @Model.EncabezadoTicket.NumeroTelefono</p>
+                <p><strong>Dirección:</strong> @Model.EncabezadoTicket.IdDireccionNavigation?.Calle</p>
+                <p><strong>Fecha del Ticket:</strong> @Model.Prestamo.FechaPrestamo.ToString("dd/MM/yyyy")</p>
+                <hr />
+            </div>
+        }
 
-    <h2>Ticket de Préstamo</h2>
+        <h2>Ticket de Préstamo</h2>
 
-    <div>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">Cliente</dt>
-            <dd class="col-sm-10">@Model.Prestamo.IdClientesNavigation?.NombreCompleto</dd>
+        <div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">Cliente</dt>
+                <dd class="col-sm-10">@Model.Prestamo.IdClientesNavigation?.NombreCompleto</dd>
 
-            <dt class="col-sm-2">Libro</dt>
-            <dd class="col-sm-10">@Model.Prestamo.IdLibroNavigation?.Titulo</dd>
+                <dt class="col-sm-2">Libro</dt>
+                <dd class="col-sm-10">@Model.Prestamo.IdLibroNavigation?.Titulo</dd>
 
-            <dt class="col-sm-2">Estado del Libro</dt>
-            <dd class="col-sm-10">@Model.Prestamo.IdEstadoLibroNavigation?.DescripcionEstado</dd>
+                <dt class="col-sm-2">Estado del Libro</dt>
+                <dd class="col-sm-10">@Model.Prestamo.IdEstadoLibroNavigation?.DescripcionEstado</dd>
 
-            <dt class="col-sm-2">Responsable</dt>
-            <dd class="col-sm-10">@Model.Prestamo.IdUsuarioNavigation?.NombreCompleto</dd>
+                <dt class="col-sm-2">Responsable</dt>
+                <dd class="col-sm-10">@Model.Prestamo.IdUsuarioNavigation?.NombreCompleto</dd>
 
-            <dt class="col-sm-2">Fecha de Préstamo</dt>
-            <dd class="col-sm-10">
-                    @(Model.Prestamo.FechaPrestamo.ToString("dd/MM/yyyy"))
-            </dd>
+                <dt class="col-sm-2">Fecha de Préstamo</dt>
+                <dd class="col-sm-10">@Model.Prestamo.FechaPrestamo.ToString("dd/MM/yyyy")</dd>
 
-            <dt class="col-sm-2">Fecha de Devolución</dt>
-            <dd class="col-sm-10">
-                @(Model.Prestamo.FechaDevolucion.ToString("dd/MM/yyyy"))
-            </dd>
-
-        </dl>
+                <dt class="col-sm-2">Fecha de Devolución</dt>
+                <dd class="col-sm-10">@Model.Prestamo.FechaDevolucion.ToString("dd/MM/yyyy")</dd>
+            </dl>
+        </div>
     </div>
 
-</div>
+    <div class="no-print">
+        <a asp-page="./Edit" asp-route-id="@Model.Prestamo.IdPrestamo">Editar</a> |
+        <a asp-page="./Index">Volver a la lista</a>
+    </div>
 
+    <div class="no-print">
+        <button onclick="window.print()" class="btn btn-custom">
+            <i class="fas fa-print"></i> Imprimir Ticket
+        </button>
+    </div>
 
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Prestamo.IdPrestamo">Editar</a> |
-    <a asp-page="./Index">Volver a la lista</a>
-</div>
-
-
-
-<div>
-    <button onclick="window.print()" class="btn btn-custom"> <i class="fas fa-print"></i> Imprimir Ticket </button>
-</div>
 </div>
 
 <style>
@@ -70,4 +65,16 @@
         border: none;
         transition: background-color 0.3s ease;
     }
+
+    @@media print {
+        .no-print {
+            display: none !important;
+        }
+    }
+
 </style>
+
+
+
+
+
