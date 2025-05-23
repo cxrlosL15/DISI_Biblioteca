@@ -1,0 +1,17 @@
+﻿@page "{id:int}"
+@model BibliotecaRinconDelLibro.Pages.Multas.DetailsModel
+@{
+    ViewData["Title"] = "Detalle de Multa";
+}
+
+<h1>Detalle de Multa</h1>
+
+<div>
+    <p><strong>Cliente:</strong> @Model.Multa.IdPrestamoNavigation?.IdClientesNavigation?.NombreCompleto</p>
+    <p><strong>Tipo de Multa:</strong> @Model.Multa.IdTipomultaNavigation?.Descripcion</p>
+    <p><strong>Monto:</strong> @Model.Multa.Monto</p>
+    <p><strong>Descripción:</strong> @Model.Multa.Descripcion</p>
+    <p><strong>Pagado:</strong> @(Model.Multa.Pagado == true ? "Sí" : "No")</p>
+</div>
+
+<a asp-page="./Index" class="btn btn-secondary">Volver</a>

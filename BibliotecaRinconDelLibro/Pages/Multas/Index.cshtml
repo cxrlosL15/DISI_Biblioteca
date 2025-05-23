@@ -1,0 +1,40 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.Multas.IndexModel
+@{
+    ViewData["Title"] = "Listado de Multas";
+}
+
+<h1>Listado de Multas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Tipo de Multa</th>
+            <th>Monto</th>
+            <th>Descripción</th>
+            <th>Pagado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MultaList)
+        {
+            <tr>
+                <td>@item.IdMulta</td>
+                <td>@item.IdPrestamoNavigation?.IdClientesNavigation?.NombreCompleto</td>
+                <td>@item.IdTipomultaNavigation?.Descripcion</td>
+                <td>@item.Monto</td>
+                <td>@item.Descripcion</td>
+                <td>@(item.Pagado == true ? "Sí" : "No")</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.IdMulta">Ver</a> |
+                    <a asp-page="./Ticket" asp-route-id="@item.IdMulta">Ticket</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="./Create" class="btn btn-primary">Registrar Multa</a>

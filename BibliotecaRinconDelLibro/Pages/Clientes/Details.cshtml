@@ -78,7 +78,7 @@
                                 @foreach (var multa in prestamo.Multa)
                                 {
                                     <li>
-                                        @multa.IdTipomultaNavigation?.Tipo - $@multa.Monto
+                                            @multa.IdTipomultaNavigation?.Descripcion - $@multa.Monto
                                         <span class="@(multa.Pagado == true ? "text-success" : "text-danger")">
                                             (@(multa.Pagado == true ? "Pagado" : "Pendiente"))
                                         </span>

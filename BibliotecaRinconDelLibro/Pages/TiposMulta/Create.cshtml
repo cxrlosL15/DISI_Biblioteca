@@ -1,0 +1,23 @@
+﻿@page
+@model BibliotecaRinconDelLibro.Pages.TipoMulta.CreateModel
+@{
+    ViewData["Title"] = "Crear Tipo de Multa";
+}
+
+<h1>Crear Tipo de Multa</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="TipoMulta.Descripcion"></label>
+        <input asp-for="TipoMulta.Descripcion" class="form-control" />
+        <span asp-validation-for="TipoMulta.Descripcion" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TipoMulta.MontoBase"></label>
+        <input asp-for="TipoMulta.MontoBase" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="TipoMulta.MontoBase" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+
+<a asp-page="Index" class="btn btn-secondary mt-3">Volver al listado</a>
