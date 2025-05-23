@@ -4,140 +4,67 @@
     ViewData["Title"] = "Lista de devoluciones";
 }
 
-<div class="admin-container page-container">
+<div class="page-container">
 
-<h1 class="title">Devoluciones de Libros</h1>
+    <h1>Devoluciones de Libros</h1>
 
-@*<a asp-page="Create">Crear Devolucion</a>*@
+    @if (!string.IsNullOrEmpty(TempData["Mensaje"]?.ToString()))
+    {
+        <div class="alert alert-success">
+            @TempData["Mensaje"]
+        </div>
+    }
 
-
-@if (!string.IsNullOrEmpty(TempData["Mensaje"]?.ToString()))
-{
-    <div class="alert alert-success">
-        @TempData["Mensaje"]
+    <div class="d-flex justify-content-start mb-4">
+        <a asp-page="./CrearDesdePrestamo"
+           class="btn btn-success">
+            + Nueva
+        </a>
     </div>
-}
-
-<a asp-page="./CrearDesdePrestamo" class="btn btn-primary">Crear devolución manual</a>
 
 
-@if (Model.DevolucionList != null && Model.DevolucionList.Any())
-{
-<table class="styled-table">
-    <thead>
-        <tr>
-            <th>ID Cliente</th>
-            <th>ID Préstamo</th>
-            <th>Motivo</th>
-            <th>ID Estado Regreso</th>
-            <th>Fecha Prestamo</th>
-            <th>Fecha de entrega</th>
-            <th> </th>
-            @*<th>Notas</th>*@
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.DevolucionList)
-        {
-            <tr>
-                        <td>
-                            @item.IdPrestamoNavigation?.IdClientesNavigation?.Nombre
-                            @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoP
-                            @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoM
-                        </td>
-                <td>@item.IdPrestamo</td>
-                <td>@item.Motivo</td>
-                <td>@item.IdEstadoRegresoNavigation?.DescripcionEstado</td>
-                <td>@item.IdPrestamoNavigation.FechaPrestamo</td>
-                <td>@item.FechaDevolucion.ToShortDateString()</td>
-
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.IdDevoluciones" class="btn btn-primary">Edit</a>
-
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-}
-else
-{
-    <p>No hay devoluciones registradas.</p>
-}
+    @if (Model.DevolucionList != null && Model.DevolucionList.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Préstamo</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                        <th>Fecha Préstamo</th>
+                        <th>Fecha Devolución</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.DevolucionList)
+                    {
+                        <tr>
+                            <td>
+                                @item.IdPrestamoNavigation?.IdClientesNavigation?.Nombre
+                                @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoP
+                                @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoM
+                            </td>
+                            <td>@item.IdPrestamo</td>
+                            <td>@item.Motivo</td>
+                            <td>@item.IdEstadoRegresoNavigation?.DescripcionEstado</td>
+                            <td>@item.IdPrestamoNavigation.FechaPrestamo.ToShortDateString()</td>
+                            <td>@item.FechaDevolucion.ToShortDateString()</td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.IdDevoluciones" class="btn btn-sm btn-primary me-1">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>No hay devoluciones registradas.</p>
+    }
 </div>
-
-<style>
-    body {
-        background-color: #E5E0CF;
-        font-family: 'Open Sans', sans-serif;
-        color: #0B0F27;
-    }
-
-    h1 {
-        font-family: 'Playfair Display', serif;
-        font-weight: 700;
-        color: #765E49;
-        text-align: center;
-        margin-top: 2rem;
-    }
-
-    .btn-primary {
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 8px;
-        font-family: 'Open Sans', sans-serif;
-        text-decoration: none;
-        color: white;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary {
-        background-color: #765E49;
-    }
-
-        .btn-primary:hover {
-            background-color: #0B0F27;
-        }
-
-
-    .table-container {
-        margin: 2rem auto;
-        max-width: 1000px;
-        background-color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.95rem;
-    }
-
-    th, td {
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        text-align: left;
-    }
-
-    th {
-        background-color: #765E49;
-        color: white;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    .actions {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .top-button {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 1rem;
-    }
-</style>
