@@ -30,21 +30,24 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
         {
             if (IdPrestamo <= 0)
             {
-                Mensaje = "Por favor, ingresa un ID de préstamo válido.";
+                TempData["Mensaje"] = "Por favor, ingresa un ID de prestamo valido.";
                 return Page();
             }
 
-            var prestamo = await _context.Prestamos.FirstOrDefaultAsync(p => p.IdPrestamo == IdPrestamo);
+            var prestamo = await _context.Prestamos
+                .Include(p => p.IdClientesNavigation)
+                .FirstOrDefaultAsync(p => p.IdPrestamo == IdPrestamo);
+
             if (prestamo == null)
             {
-                Mensaje = $"No se encontró el préstamo con ID {IdPrestamo}.";
+                TempData["Mensaje"] = $"No se encontro el prestamo con ID {IdPrestamo}.";
                 return Page();
             }
 
             bool yaDevuelto = await _context.Devoluciones.AnyAsync(d => d.IdPrestamo == IdPrestamo);
             if (yaDevuelto)
             {
-                Mensaje = "Este préstamo ya tiene una devolución registrada.";
+                TempData["Mensaje"] = "Este prestamo ya tiene una devolucion registrada.";
                 return Page();
             }
 
@@ -55,11 +58,23 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
             };
 
             _context.Devoluciones.Add(devolucion);
+
+            // Cambia el estado del préstamo a "Devuelto" 
+            prestamo.IdEstadoPrestamo = "Devuelto";
+
             await _context.SaveChangesAsync();
 
-            Mensaje = $"Devolución registrada correctamente para préstamo ID {IdPrestamo}.";
+            // Verifica si se pasó la fecha de devolución
+            if (prestamo.FechaDevolucion.HasValue && DateOnly.FromDateTime(DateTime.Now) > prestamo.FechaDevolucion.Value)
+            {
+                TempData["Mensaje"] = "Devolucion registrada. SE DEBE GENERAR UNA MULTA";
+            }
+            else
+            {
+                TempData["Mensaje"] = $"Devolucion registrada correctamente.";
+            }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./CrearDesdePrestamo"); // o "../Index" si prefieres volver al listado
         }
     }
 }

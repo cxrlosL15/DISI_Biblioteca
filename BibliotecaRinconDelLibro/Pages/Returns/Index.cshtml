@@ -20,15 +20,6 @@
 
 <a asp-page="./CrearDesdePrestamo" class="btn btn-primary">Crear devolución manual</a>
 
-@*<form method="post">
-    <div class="form-group">
-        <label for="IdPrestamo">ID del Préstamo:</label>
-        <input type="number" id="IdPrestamo" name="IdPrestamo" class="form-control" required />
-    </div>
-    <button type="submit" class="btn btn-success">Registrar devolución</button>
-</form>*@
-
-@*<a asp-page="/Devoluciones/CrearDesdePrestamo" class="btn btn-primary">Registrar devolución por ID de préstamo</a>*@
 
 @if (Model.DevolucionList != null && Model.DevolucionList.Any())
 {
@@ -40,7 +31,7 @@
             <th>Motivo</th>
             <th>ID Estado Regreso</th>
             <th>Fecha Prestamo</th>
-            <th>Fecha de Devolucion</th>
+            <th>Fecha de entrega</th>
             <th> </th>
             @*<th>Notas</th>*@
         </tr>
@@ -49,7 +40,11 @@
         @foreach (var item in Model.DevolucionList)
         {
             <tr>
-                <td>@item.IdDevoluciones</td>
+                        <td>
+                            @item.IdPrestamoNavigation?.IdClientesNavigation?.Nombre
+                            @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoP
+                            @item.IdPrestamoNavigation?.IdClientesNavigation?.ApellidoM
+                        </td>
                 <td>@item.IdPrestamo</td>
                 <td>@item.Motivo</td>
                 <td>@item.IdEstadoRegresoNavigation?.DescripcionEstado</td>

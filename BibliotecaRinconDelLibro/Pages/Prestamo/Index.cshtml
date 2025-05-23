@@ -1,6 +1,20 @@
 ﻿@page
 @model BibliotecaRinconDelLibro.Pages.Prestamo.IndexModel
 
+
+@functions {
+    
+    string ObtenerEstadoPrestamo(string estado)
+    {
+        return estado switch
+        {
+            "Prestado" => "Prestado",
+            "Devuelto" => "Devuelto",
+            _ => "Prestado"
+        };
+    }
+}
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -32,7 +46,7 @@
                 <td>@item.IdEstadoLibroNavigation?.DescripcionEstado</td>
                 <td>@item.IdLibroNavigation?.Titulo</td>
                 <td>@item.FechaDevolucion.ToString("d")</td>
-                <td>@item.IdEstadoPrestamo</td> <!-- Corregido -->
+                <td>@ObtenerEstadoPrestamo(item.IdEstadoPrestamo)</td> <!-- Corregido -->
                 <td>@item.IdUsuarioNavigation?.NombreCompleto</td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.IdPrestamo" style="color: #6F8249;">Editar</a> |
