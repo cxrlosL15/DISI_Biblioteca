@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BibliotecaRinconDelLibro.Models;
 
-namespace BibliotecaRinconDelLibro.Pages.Multas
+namespace BibliotecaRinconDelLibro.Pages.Multa
 {
     public class DetailsModel : PageModel
     {

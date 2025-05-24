@@ -26,7 +26,7 @@ public partial class Multa
     [Unicode(false)]
     public string? Descripcion { get; set; }
 
-    public bool Pagado { get; set; }= false;
+    public bool Pagado { get; set; } = false;
 
     [ForeignKey("IdPrestamo")]
     [InverseProperty("Multa")]
