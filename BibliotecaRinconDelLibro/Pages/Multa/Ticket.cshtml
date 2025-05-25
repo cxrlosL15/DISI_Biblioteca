@@ -33,7 +33,16 @@
         <p><strong>Fecha del Ticket:</strong> @Model.EncabezadoTicket.Fecha.ToString("dd/MM/yyyy")</p>
         <hr />
         <h3>Ticket de Multa</h3>
-        <p><strong>Cliente:</strong> @Model.Multa.IdPrestamoNavigation?.IdClientesNavigation?.NombreCompleto</p>
+        <p>
+            <strong>Cliente:</strong>
+            @(
+                        Model.Multa.IdPrestamoNavigation?.IdClientesNavigation != null
+                        ? $"{Model.Multa.IdPrestamoNavigation.IdClientesNavigation.Nombre} " +
+                        $"{Model.Multa.IdPrestamoNavigation.IdClientesNavigation.ApellidoP} " +
+                        $"{Model.Multa.IdPrestamoNavigation.IdClientesNavigation.ApellidoM}"
+                        : "Cliente no disponible"
+                        )
+        </p>
         <p><strong>Tipo de Multa:</strong> @Model.Multa.IdTipomultaNavigation?.Descripcion</p>
         <p><strong>Monto:</strong> $@Model.Multa.Monto</p>
         <p><strong>Pagado:</strong> @(Model.Multa.Pagado == true ? "Sí" : "No")</p>
