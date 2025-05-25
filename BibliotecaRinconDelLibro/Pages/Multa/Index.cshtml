@@ -23,7 +23,13 @@
         {
             <tr>
                 <td>@item.IdMulta</td>
-                <td>@item.IdPrestamoNavigation?.IdClientesNavigation?.NombreCompleto</td>
+                <td>
+                    @(item.IdPrestamoNavigation?.IdClientesNavigation != null
+                                    ? item.IdPrestamoNavigation.IdClientesNavigation.Nombre + " " +
+                                    item.IdPrestamoNavigation.IdClientesNavigation.ApellidoP + " " +
+                                    item.IdPrestamoNavigation.IdClientesNavigation.ApellidoM
+                                    : "Cliente no disponible")
+               </td>
                 <td>@item.IdTipomultaNavigation?.Descripcion</td>
                 <td>@item.Monto</td>
                 <td>@item.Descripcion</td>

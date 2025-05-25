@@ -23,6 +23,7 @@ namespace BibliotecaRinconDelLibro.Pages.Multas
             MultaList = await _context.Multas
                 .Include(m => m.IdPrestamoNavigation)
                 .Include(m => m.IdTipomultaNavigation)
+
                 .ToListAsync();
         }
     }
