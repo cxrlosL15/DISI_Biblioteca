@@ -21,9 +21,10 @@ namespace BibliotecaRinconDelLibro.Pages.Multas
         public async Task OnGetAsync()
         {
             MultaList = await _context.Multas
-                .Include(m => m.IdPrestamoNavigation)
-                .Include(m => m.IdTipomultaNavigation)
-                .ToListAsync();
+        .Include(m => m.IdPrestamoNavigation)
+            .ThenInclude(p => p.IdClientesNavigation)
+        .Include(m => m.IdTipomultaNavigation)
+        .ToListAsync();
         }
     }
 }
