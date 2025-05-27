@@ -19,8 +19,6 @@ namespace BibliotecaRinconDelLibro.Pages.Prestamo
         }
 
         public BibliotecaRinconDelLibro.Models.Prestamo Prestamo { get; set; } = default!;
-        public double TotalMultasPendientes { get; set; } // Para mostrar la suma en la vista
-        public double TotalMultasPagadas { get; set; }   // Opcional: para mostrar lo pagado
         public EncabezadoTicket? EncabezadoTicket { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
