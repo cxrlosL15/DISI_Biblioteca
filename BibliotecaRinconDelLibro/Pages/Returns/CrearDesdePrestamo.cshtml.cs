@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BibliotecaRinconDelLibro.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BibliotecaRinconDelLibro.Pages.Returns
@@ -21,9 +22,24 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
 
         public string? Mensaje { get; set; }
 
-        public void OnGet()
+        public List<SelectListItem> PrestamosDisponibles { get; set; } = new();
+
+        public async Task OnGetAsync()
         {
-            // Por si quieres pasar un IdPrestamo por query string en el futuro
+            var prestamosConClientes = await _context.Prestamos
+                .Include(p => p.IdClientesNavigation)
+                .ToListAsync();
+
+            var prestamosSinDevolucion = prestamosConClientes
+                .Where(p => !_context.Devoluciones.Any(d => d.IdPrestamo == p.IdPrestamo))
+                .ToList();
+
+            PrestamosDisponibles = prestamosSinDevolucion
+                .Select(p => new SelectListItem
+                {
+                    Value = p.IdPrestamo.ToString(),
+                    Text = $"#{p.IdPrestamo} - {p.IdClientesNavigation.Nombre} {p.IdClientesNavigation.ApellidoP} {p.IdClientesNavigation.ApellidoM}"
+                }).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync()
