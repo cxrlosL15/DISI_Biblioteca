@@ -1,0 +1,88 @@
+﻿@page "{id:int}"
+@model BibliotecaRinconDelLibro.Pages.Multas.EditModel
+@{
+    ViewData["Title"] = "Editar Multa";
+}
+
+<h1>Editar Multa</h1>
+<h4>Multa ID: @Model.Multa.IdMulta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        @* Reducido el ancho para mejor estética en algunos casos *@
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* El ID de la multa debe estar presente pero no ser editable directamente por el usuario *@
+            <input type="hidden" asp-for="Multa.IdMulta" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Multa.IdPrestamo" class="control-label">Préstamo Asociado</label>
+                @* Mostrar el préstamo como información, o hacerlo un dropdown si se permite cambiarlo *@
+                @if (Model.PrestamosList != null)
+                {
+                    <select asp-for="Multa.IdPrestamo" class="form-control" asp-items="Model.PrestamosList">
+                        <option value="">-- Seleccione un Préstamo --</option>
+                    </select>
+                }
+                else
+                {
+                    <input asp-for="Multa.IdPrestamo" class="form-control" readonly /> @* O mostrar texto descriptivo *@
+                }
+                <span asp-validation-for="Multa.IdPrestamo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Multa.IdTipomulta" class="control-label">Tipo de Multa</label>
+                @if (Model.TiposMultaList != null)
+                {
+                    <select asp-for="Multa.IdTipomulta" class="form-control" asp-items="Model.TiposMultaList">
+                        <option value="">-- Seleccione un Tipo de Multa --</option>
+                    </select>
+                }
+                else
+                {
+                    <input asp-for="Multa.IdTipomulta" class="form-control" readonly />
+                }
+                <span asp-validation-for="Multa.IdTipomulta" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Multa.Monto" class="control-label"></label>
+                <input asp-for="Multa.Monto" class="form-control" readonly /> @* Añadido readonly *@
+                <span asp-validation-for="Multa.Monto" class="text-danger"></span>
+                <small class="form-text text-muted">El monto se calcula automáticamente según el tipo de multa seleccionado.</small>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Multa.Descripcion" class="control-label"></label>
+                <textarea asp-for="Multa.Descripcion" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Multa.Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Multa.Pagado" class="control-label"></label>
+                @* Usar un SelectList para bool? que incluye una opción para null (Pendiente) *@
+                <select asp-for="Multa.Pagado" class="form-control" asp-items="Model.EstadosPagado"></select>
+                <span asp-validation-for="Multa.Pagado" class="text-danger"></span>
+                @* Alternativa con Checkbox (no maneja null explícitamente, se trataría como false en el binding si no se marca):
+                   <div class="form-check">
+                       <input class="form-check-input" type="checkbox" asp-for="Multa.Pagado" />
+                       <label class="form-check-label" asp-for="Multa.Pagado">Marcar si está Pagado</label>
+                   </div>
+                *@
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                <a asp-page="./Index" class="btn btn-secondary">Cancelar y Volver a la Lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
