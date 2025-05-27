@@ -44,12 +44,11 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-
         /*
-        max-width: 100%;
-        height: auto;
-        margin-top: 20px;
-        */
+                max-width: 100%;
+                height: auto;
+                margin-top: 20px;
+                */
     }
 
     .chart-section {
@@ -113,56 +112,56 @@
 
 <div class="admin-container page-container">
 
-<div class="selector-container">
-    <div class="selector-card" data-section="libros">📚 Libros más prestados</div>
-    <div class="selector-card" data-section="clientes">👥 Clientes con multas</div>
-    <div class="selector-card" data-section="inventario">📦 Inventario general</div>
-</div>
+    <div class="selector-container">
+        <div class="selector-card" data-section="libros">📚 Libros más prestados</div>
+        <div class="selector-card" data-section="clientes">👥 Clientes con multas</div>
+        <div class="selector-card" data-section="inventario">📦 Inventario general</div>
+    </div>
 
-<div class="reporte-container">
-    <h1>Reportes de Biblioteca</h1>
+    <div class="reporte-container">
+        <h1>Reportes de Biblioteca</h1>
 
-    <form method="post" asp-page-handler="GenerarPDF" id="pdfForm"> 
-        <input type="hidden" name="SeccionesSeleccionadas" id="SeccionesSeleccionadas" />
-        <button type="submit" class="btn-pdf">Exportar PDF</button> 
-     </form>
+        <form method="post" asp-page-handler="GenerarPDF" id="pdfForm">
+            <input type="hidden" name="SeccionesSeleccionadas" id="SeccionesSeleccionadas" />
+            <button type="submit" class="btn-pdf">Exportar PDF</button>
+        </form>
 
-    <div class="chart-section" id="chartLibrosSection">
-        <h2>Libros más prestados</h2>
-        <div class="chart-row">
-            <div class="chart-column">
-                <canvas id="lineLibros"></canvas>
+        <div class="chart-section" id="chartLibrosSection">
+            <h2>Libros más prestados</h2>
+            <div class="chart-row">
+                <div class="chart-column">
+                    <canvas id="lineLibros"></canvas>
+                </div>
+                <div class="chart-column">
+                    <canvas id="chartLibros"></canvas>
+                </div>
             </div>
-            <div class="chart-column">
-                <canvas id="chartLibros"></canvas>
+        </div>
+
+        <div class="chart-section" id="chartClientesSection">
+            <h2>Clientes con más multas</h2>
+            <div class="chart-row">
+                <div class="chart-column">
+                    <canvas id="lineClientes"></canvas>
+                </div>
+                <div class="chart-column">
+                    <canvas id="chartClientes"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section" id="chartInventarioSection">
+            <h2>Titulos Por Categoria</h2>
+            <div class="chart-row">
+                <div class="chart-column">
+                    <canvas id="lineInventario"></canvas>
+                </div>
+                <div class="chart-column">
+                    <canvas id="chartInventario"></canvas>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="chart-section" id="chartClientesSection">
-        <h2>Clientes con más multas</h2>
-        <div class="chart-row">
-            <div class="chart-column">
-                <canvas id="lineClientes"></canvas>
-            </div>
-            <div class="chart-column">
-                <canvas id="chartClientes"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="chart-section" id="chartInventarioSection">
-        <h2>Inventario general</h2>
-        <div class="chart-row">
-            <div class="chart-column">
-                <canvas id="lineInventario"></canvas>
-            </div>
-            <div class="chart-column">
-                <canvas id="chartInventario"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -254,11 +253,11 @@
     const inventarioData = @Html.Raw(Json.Serialize(Model.InventarioData));
 
     // Crear gráficos con datos de la vista
-    createPieChart("chartLibros", @Html.Raw(Json.Serialize(Model.LibrosLabels)), @Html.Raw(Json.Serialize(Model.LibrosData)), ["#0B0F27", "#6F8249", "#765E49", "#E5E0CF", "#FAFAF8"]);
+    createPieChart("chartLibros", @Html.Raw(Json.Serialize(Model.LibrosLabels)), @Html.Raw(Json.Serialize(Model.LibrosData)), ["#0B0F27", "#6F8249", "#765E49", "#C96A4B", "#FAFAF8"]);
     createPieChart("chartClientes", @Html.Raw(Json.Serialize(Model.ClientesLabels)), @Html.Raw(Json.Serialize(Model.ClientesData)), ["#765E49", "#6F8249", "#0B0F27", "#E5E0CF", "#FAFAF8"]);
     createPieChart("chartInventario", @Html.Raw(Json.Serialize(Model.InventarioLabels)), @Html.Raw(Json.Serialize(Model.InventarioData)), ["#6F8249", "#765E49", "#0B0F27"]);
 
-        createLineChart("lineLibros", librosLabels, librosData, "#0B0F27");
+    createLineChart("lineLibros", librosLabels, librosData, "#0B0F27");
     createLineChart("lineClientes", clientesLabels, clientesData, "#765E49");
     createLineChart("lineInventario", inventarioLabels, inventarioData, "#6F8249");
 

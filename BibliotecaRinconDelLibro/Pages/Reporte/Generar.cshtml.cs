@@ -45,31 +45,34 @@ public class ReportesModel : PageModel
             .Select(l => l.Prestamos.Count)
             .ToList();
 
-        ClientesLabels = _context.Clientes
+        var clientesConMultas = _context.Clientes
             .Select(c => new
             {
-                Nombre = c.Nombre + " " + c.ApellidoP,
+                NombreCompleto = c.Nombre + " " + c.ApellidoP,
                 CantMultas = c.Prestamos.SelectMany(p => p.Multa).Count()
             })
             .Where(c => c.CantMultas > 0)
             .OrderByDescending(c => c.CantMultas)
             .Take(5)
-            .Select(c => c.Nombre)
             .ToList();
 
-        ClientesData = _context.Clientes
-            .Select(c => c.Prestamos.SelectMany(p => p.Multa).Count())
-            .Where(m => m > 0)
-            .OrderByDescending(m => m)
-            .Take(5)
-            .ToList();
+        ClientesLabels = clientesConMultas.Select(c => c.NombreCompleto).ToList();
+        ClientesData = clientesConMultas.Select(c => c.CantMultas).ToList();
 
         int total = _context.Libros.Count();
         int prestados = _context.Prestamos.Count(p => p.FechaDevolucion == null);
         int disponibles = total - prestados;
 
-        InventarioLabels = new List<string> { "Total", "Prestados", "Disponibles" };
-        InventarioData = new List<int> { total, prestados, disponibles };
+        var inventarioPorCategoria = _context.Libros
+    .Include(l => l.IdCategoriasNavigation)
+    .ToList()
+    .GroupBy(l => l.IdCategoriasNavigation?.Categoria1 ?? "Sin categoría")
+    .Select(g => new { Categoria = g.Key, Cantidad = g.Count() })
+    .ToList();
+
+        InventarioLabels = inventarioPorCategoria.Select(i => i.Categoria).ToList();
+        InventarioData = inventarioPorCategoria.Select(i => i.Cantidad).ToList();
+
     }
 
     public async Task<IActionResult> OnPostGenerarPDF(string SeccionesSeleccionadas)
@@ -187,14 +190,14 @@ public class ReportesModel : PageModel
 
                     if (secciones.Contains("inventario"))
                     {
-                        var inventario = _context.Libros
+                        var inventarioPorCategoria = _context.Libros
                             .Include(l => l.IdCategoriasNavigation)
-                            .ToList() // ← fuerza la ejecución en memoria
+                            .ToList()
                             .GroupBy(l => l.IdCategoriasNavigation?.Categoria1 ?? "Sin categoría")
                             .Select(g => new { Categoria = g.Key, Cantidad = g.Count() })
                             .ToList();
 
-                        column.Item().Element(e => e.PaddingBottom(5)).Text("Inventario general")
+                        column.Item().Element(e => e.PaddingBottom(5)).Text("Inventario general por categoría")
                             .FontSize(14)
                             .FontFamily("Montserrat")
                             .Bold()
@@ -216,7 +219,7 @@ public class ReportesModel : PageModel
                                     .FontFamily("Open Sans").Bold().FontColor("#0B0F27");
                             });
 
-                            foreach (var item in inventario)
+                            foreach (var item in inventarioPorCategoria)
                             {
                                 table.Cell().Text(item.Categoria)
                                     .FontFamily("Open Sans").FontColor("#0B0F27");
@@ -225,6 +228,7 @@ public class ReportesModel : PageModel
                             }
                         });
                     }
+
                 });
 
                 page.Footer().Column(col =>
@@ -245,4 +249,3 @@ public class ReportesModel : PageModel
         return File(pdfBytes, "application/pdf", "Reporte_Biblioteca.pdf");
     }
 }
-

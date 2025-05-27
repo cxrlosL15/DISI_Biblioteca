@@ -48,6 +48,7 @@ namespace BibliotecaRinconDelLibro.Pages.Prestamo
             }
 
             Prestamo = prestamo;
+            /*
             TotalMultasPendientes = await _context.Multas
                .Where(m => m.IdPrestamo == id && m.Pagado != true) // Filtra por el ID del préstamo actual y que no esté pagada
                .SumAsync(m => m.Monto ?? 0); // Suma los montos (trata null como 0)
@@ -56,7 +57,7 @@ namespace BibliotecaRinconDelLibro.Pages.Prestamo
             TotalMultasPagadas = await _context.Multas
                 .Where(m => m.IdPrestamo == id && m.Pagado == true)
                 .SumAsync(m => m.Monto ?? 0);
-
+            */
             return Page();
         }
 
