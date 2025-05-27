@@ -96,6 +96,14 @@
                     <i class="bi bi-bar-chart-line me-2"></i>
                     Reportes
                 </a>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <div class="sidebar-subtitle mt-4">Usuarios</div>
+                    <a class="sidebar-link d-flex align-items-center" asp-page="/Admin/GestionUsuarios">
+                        <i class="bi bi-person me-2"></i>
+                        Usuarios
+                    </a>
+                }
             </nav>
         </div>
     </div>
