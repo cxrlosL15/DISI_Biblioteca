@@ -36,7 +36,7 @@ namespace BibliotecaRinconDelLibro.Pages.Multa
              Multa = await _context.Multas
                 .Include(m => m.IdPrestamoNavigation).ThenInclude(p => p.IdClientesNavigation)
                 .Include(m => m.IdTipomultaNavigation)
-                .Include(m => m.TicketMulta) // Esto asume una relación Multa -> TicketMulta
+                .Include(m => m.TicketMulta)
                     .ThenInclude(tm => tm.IdEncabezadoTicketNavigation)
                 .FirstOrDefaultAsync(m => m.IdMulta == id);
 

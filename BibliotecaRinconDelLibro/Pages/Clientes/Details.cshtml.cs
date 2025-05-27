@@ -20,13 +20,15 @@ namespace BibliotecaRinconDelLibro.Pages.Clientes
 
         public Cliente Cliente { get; set; } = default!;
 
+        public double TotalMultasPendientesDelCliente { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Clientes == null)
             {
                 return NotFound();
             }
-
+            
             Cliente = await _context.Clientes
         .Include(c => c.IdDireccionNavigation) // <--- Esta línea es clave
         .Include(c => c.Prestamos)
@@ -34,15 +36,23 @@ namespace BibliotecaRinconDelLibro.Pages.Clientes
         .Include(c => c.Prestamos)
             .ThenInclude(p => p.Multa)
                 .ThenInclude(m => m.IdTipomultaNavigation)
-        .FirstOrDefaultAsync(m => m.IdClientes == id) ?? throw new InvalidOperationException("Cliente no encontrado."); 
+        .FirstOrDefaultAsync(m => m.IdClientes == id) ?? throw new InvalidOperationException("Cliente no encontrado.");
+
+           
+
+
             if (Cliente == null)
             {
                 return NotFound();
             }
+            
             else
             {
                 Cliente = Cliente;
             }
+            TotalMultasPendientesDelCliente = await _context.Multas
+                .Where(m => m.IdPrestamoNavigation.IdClientes == id && m.Pagado != true)
+                .SumAsync(m => m.Monto ?? 0);
             return Page();
         }
     }

@@ -29,4 +29,6 @@ public partial class TipoMultum
 
     [InverseProperty("IdTipoMultaNavigation")]
     public virtual ICollection<TicketMultum> TicketMulta { get; set; } = new List<TicketMultum>();
+
+   
 }
