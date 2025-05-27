@@ -1,7 +1,7 @@
 ﻿@page "{idPrestamo?}"
 @model BibliotecaRinconDelLibro.Pages.Returns.CrearDesdePrestamoModel
 @{
-    ViewData["Title"] = "Crear devolución desde préstamo";
+    ViewData["Title"] = "Crear devolución";
 }
 
 <div class="page-container">
@@ -11,7 +11,9 @@
 <form method="post">
     <div class="form-group">
         <label asp-for="IdPrestamo"># de Préstamo</label>
-            <input asp-for="IdPrestamo" id="valorIdPrestamoInput" class="form-control" type="number" required />
+            <select asp-for="IdPrestamo" asp-items="Model.PrestamosDisponibles" class="form-control" required>
+                <option value="">-- Seleccione un préstamo --</option>
+            </select>
         <span asp-validation-for="IdPrestamo" class="text-danger"></span>
     </div>
 

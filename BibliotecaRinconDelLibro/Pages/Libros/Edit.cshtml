@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
+        <form id="formEditarLibro" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="NuevaDisponibilidad.IdDisponibilidad" />
             <input type="hidden" asp-for="Libro.IdDisponibilidad" />
@@ -284,7 +284,7 @@
 
     <script>
         @*IMAGENES*@
-        document.querySelector("form").addEventListener("submit", function (e) {
+            document.querySelector("#formEditarLibro").addEventListener("submit", function (e) {
             const inputImagen = document.querySelector('input[type="file"][name="Imagen"]');
             const mensajeValidacion = document.querySelector('span[data-valmsg-for="Imagen"]');
 
@@ -322,7 +322,7 @@
 
     <script>
         // Capturamos el submit del formulario
-        document.querySelector("form").addEventListener("submit", function (e) {
+        document.querySelector("#formEditarLibro").addEventListener("submit", function (e) {
             // Obtenemos la operación seleccionada: "Agregar" o "Retirar"
             const operacion = document.querySelector('input[name="SelectedOperation"]:checked')?.value;
             // Sólo nos interesa validar si es "Retirar"
@@ -453,7 +453,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const contenedor = document.getElementById("contenedor-autores");
             const botonAgregar = document.getElementById("agregar-autor");
-            const formulario = document.querySelector("form");
+            const formulario = document.querySelector("#formEditarLibro");
 
             function mostrarErrorSweet(texto) {
                 Swal.fire({

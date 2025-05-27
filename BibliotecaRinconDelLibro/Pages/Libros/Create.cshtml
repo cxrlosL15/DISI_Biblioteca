@@ -15,7 +15,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
+        <form id="formCrearLibro" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Libro.Titulo" class="control-label">Título</label>
@@ -185,7 +185,7 @@
     </script>
 
     <script> @*IMAGENES*@
-        document.querySelector("form").addEventListener("submit", function (e) {
+        document.querySelector("#formCrearLibro").addEventListener("submit", function (e) {
             const inputImagen = document.querySelector('input[type="file"][name="Imagen"]');
             const mensajeValidacion = document.querySelector('span[data-valmsg-for="Imagen"]');
 
@@ -204,7 +204,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const contenedor = document.getElementById("contenedor-autores");
             const botonAgregar = document.getElementById("agregar-autor");
-            const formulario = document.querySelector("form");
+            const formulario = document.querySelector("#formCrearLibro");
 
                 function mostrarErrorSweet(texto) {
                     Swal.fire({
