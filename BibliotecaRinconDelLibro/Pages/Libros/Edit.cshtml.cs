@@ -201,6 +201,7 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
                 if (SelectedOperation == "Agregar")
                 {
                     dispDb.TotalLibros = tot + Quantity;
+                    dispDb.TotalDespuesPrestamos = (dispDb.TotalDespuesPrestamos ?? 0) + Quantity;
                     dispChanged = true;
                 }
                 else if (SelectedOperation == "Retirar")
@@ -213,6 +214,7 @@ namespace BibliotecaRinconDelLibro.Pages.Libros
                         return Page();
                     }
                     dispDb.TotalLibros = tot - Quantity;
+                    dispDb.TotalDespuesPrestamos = (dispDb.TotalDespuesPrestamos ?? 0) - Quantity;
                     dispChanged = true;
                 }
             }
