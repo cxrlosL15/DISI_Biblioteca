@@ -68,14 +68,9 @@ namespace BibliotecaRinconDelLibro.Pages.Returns
             // Buscar el registro de disponibilidad relacionado
             var disponibilidad = await _context.Disponibilidads.FirstOrDefaultAsync(d => d.IdLibro == libroId);
 
-            if (disponibilidad != null)
-            {
-                if (disponibilidad.CopiasPrestadas > 0)
-                    disponibilidad.CopiasPrestadas -= 1;
-
-                disponibilidad.TotalDespuesPrestamos = disponibilidad.TotalLibros - disponibilidad.CopiasPrestadas;
-            }
-            if (disponibilidad != null && disponibilidad.CopiasPrestadas.HasValue && disponibilidad.TotalLibros.HasValue)
+            if (disponibilidad != null &&
+            disponibilidad.CopiasPrestadas.HasValue &&
+            disponibilidad.TotalLibros.HasValue)
             {
                 if (disponibilidad.CopiasPrestadas > 0)
                     disponibilidad.CopiasPrestadas--;
